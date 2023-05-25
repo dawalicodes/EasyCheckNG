@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.AppBarOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Toolbar.Light" parent="@style/AppTheme" />
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="statusBarBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:actionModeBackground">@color/blue_grey_600</item>
+        <item name="android:dialogTheme">@style/Dialog.Theme</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Dialog.Theme" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TextAppearance.Subhead.Bold" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="bottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModal</item>
+    </style>
+
+    <style name="BottomSheetModal" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <style name="USSDTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen" >
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="postSplashScreenTheme">@style/Theme.EasyCheck</item>
+    </style>
+
+     <style name="simOne" parent="Widget.MaterialComponents.Button">
+         <item name="shapeAppearanceOverlay">@style/MySimStyleOne</item>
+         <item name="android:insetTop">0dip</item>
+         <item name="android:insetBottom">0dip</item>
+         <item name="iconPadding">0dip</item>
+         <item name="iconGravity">textStart</item>
+     </style>
+    <style name="simTwo" parent="Widget.MaterialComponents.Button">
+         <item name="shapeAppearanceOverlay">@style/MySimStyleTwo</item>
+        <item name="android:insetTop">0dip</item>
+        <item name="android:insetBottom">0dip</item>
+        <item name="iconPadding">0dip</item>
+        <item name="iconGravity">textStart</item>
+     </style>
+
+    <style name="MySimStyleOne" parent="">
+        <item name="cornerSizeBottomLeft">20dip</item>
+        <item name="cornerSizeTopLeft">20dip</item>
+        <item name="cornerSizeTopRight">0dip</item>
+        <item name="cornerSizeBottomRight">0dip</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+    <style name="MySimStyleTwo" parent="">
+        <item name="cornerSizeBottomLeft">0dip</item>
+        <item name="cornerSizeTopLeft">0dip</item>
+        <item name="cornerSizeTopRight">20dip</item>
+        <item name="cornerSizeBottomRight">20dip</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="bottomCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Materia.cardview</item>
+    </style>
+    <style name="bottomCardViewBank" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/grey_100</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Materia.cardview.Bank</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.MaterialComponents.Materia.cardview" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomRight">8dip</item>
+        <item name="cornerSizeBottomLeft">8dip</item>
+        <item name="cornerSizeTopRight">0dip</item>
+        <item name="cornerSizeTopLeft">0dip</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.MaterialComponents.Materia.cardview.Bank" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomRight">0dip</item>
+        <item name="cornerSizeBottomLeft">0dip</item>
+        <item name="cornerSizeTopRight">8dip</item>
+        <item name="cornerSizeTopLeft">8dip</item>
+    </style>
+</resources>

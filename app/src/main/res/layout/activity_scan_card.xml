@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/preview_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/image_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/scan_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/lens_scan"
+        android:layout_width="20.0dip"
+        android:layout_height="0.0dip"
+        android:src="@drawable/scan_lens"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/image_box"
+        app:layout_constraintLeft_toLeftOf="@id/image_box"
+        app:layout_constraintTop_toTopOf="@id/image_box"
+        app:tint="@color/light_green_400" />
+
+    <ImageView
+        android:id="@+id/analyze_indicator"
+        android:layout_width="@dimen/spacing_xmlarge"
+        android:layout_height="@dimen/spacing_xmlarge"
+        android:layout_margin="@dimen/spacing_medium"
+        android:src="@drawable/ic_baseline_camera_24"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/image_box"
+        app:layout_constraintTop_toBottomOf="@id/image_box"
+        app:tint="#ff6ecdec" />
+
+    <TextView
+        android:id="@+id/analyze_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/analyzing"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="#ff6ecdec"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/analyze_indicator"
+        app:layout_constraintLeft_toRightOf="@id/analyze_indicator"
+        app:layout_constraintTop_toTopOf="@id/analyze_indicator" />
+
+    <View
+        android:id="@id/left"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        android:alpha="0.4"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/image_box"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@id/top"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        android:alpha="0.4"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/image_box"
+        app:layout_constraintLeft_toRightOf="@id/left"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@id/right"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        android:alpha="0.4"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/image_box"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top" />
+
+    <View
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        android:alpha="0.4"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/left"
+        app:layout_constraintRight_toLeftOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/image_box" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_mlarge"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/toggle_button"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Material3.DayNight"
+            app:icon="@drawable/ic_baseline_flashlight_on_24"
+            app:strokeWidth="1.0dip" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <Button
+        android:id="@+id/load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recharge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <ImageView
+        android:id="@+id/sample_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintTop_toBottomOf="@id/image_box"
+        app:layout_constraintLeft_toLeftOf="@id/image_box"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

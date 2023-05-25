@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mobile_prefix">
+        <item>0909</item>
+        <item>0908</item>
+        <item>0818</item>
+        <item>0809</item>
+        <item>0817</item>
+    </string-array>
+
+    <string-array name="airtel_prefix">
+        <item>0907</item>
+        <item>0708</item>
+        <item>0802</item>
+        <item>0902</item>
+        <item>0812</item>
+        <item>0808</item>
+        <item>0701</item>
+    </string-array>
+
+    <string-array name="mtn_prefix">
+        <item>0803</item>
+        <item>0816</item>
+        <item>0903</item>
+        <item>0810</item>
+        <item>0806</item>
+        <item>0703</item>
+        <item>0706</item>
+        <item>0813</item>
+        <item>0814</item>
+        <item>0906</item>
+    </string-array>
+
+    <string-array name="glo_prefix">
+        <item>0805</item>
+        <item>0905</item>
+        <item>0807</item>
+        <item>0811</item>
+        <item>0705</item>
+        <item>0815</item>
+    </string-array>
+</resources>

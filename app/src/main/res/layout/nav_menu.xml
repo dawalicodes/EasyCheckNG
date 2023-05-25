@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_large">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_middle"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingTop="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle"
+                android:text="TASK"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/grey_40" />
+
+            <LinearLayout
+                android:id="@+id/bank_service"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium"
+                android:focusable="true">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_business_24"
+                    app:tint="@color/pink_400" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:text="Bank Services"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ussd_codes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_dialpad_24"
+                    app:tint="@color/purple_500" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ussd codes"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+
+                <View
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/network_lookup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_sim_card_24"
+                    app:tint="@color/deep_orange_500" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Network Lookup"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+
+                <View
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mail_us"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_mail_24"
+                    app:tint="@color/blue_600" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mail"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_middle"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingTop="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle"
+                android:text="APP"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/grey_40" />
+
+            <LinearLayout
+                android:id="@+id/follow_us"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_thumb_up_alt_24"
+                    app:tint="@color/lime_500" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Follow Us"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/about_us"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium"
+                android:focusable="true">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_live_help_24"
+                    app:tint="@color/green_400" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+
+                <View
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rate_us"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium"
+                android:focusable="true">
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_margin="@dimen/spacing_middle"
+                    app:srcCompat="@drawable/ic_baseline_star_half_24"
+                    app:tint="@color/cyan_500" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0.0dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rate"
+                    android:textColor="@color/grey_80"
+                    app:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="15dip">
+        <ImageView
+            android:id="@+id/tool_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/stanbic_bank"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        app:layout_constraintTop_toBottomOf="@id/card"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="11sp"
+        android:text="@string/app_name"
+        android:id="@+id/tools_text"
+        android:textAppearance="@style/TextAppearance.Material3.LabelSmall"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

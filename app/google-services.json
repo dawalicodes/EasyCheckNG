@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77348123061",
+    "project_id": "easy-check-8b4b0",
+    "storage_bucket": "easy-check-8b4b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77348123061:android:fcdb32b519b6b42ce929fc",
+        "android_client_info": {
+          "package_name": "com.dawalisoftwares.easycheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77348123061-fkv55bvq93tf1le1lv3bamnodd2qn2cj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBicepPYdaEPRZaqo0Jh-YkNF5IIpk2Nq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77348123061-fkv55bvq93tf1le1lv3bamnodd2qn2cj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
