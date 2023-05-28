@@ -70,7 +70,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,9 +87,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
     private ArrayList<Object> items;
     private LinearLayoutManager ussdLayoutManager;
     private int opened = -1;
-    private GridView toolGridview;
     private USSDViewModel viewModel;
-    private Toolbar toolbar;
     private List<Bank> banks;
 
     ActivityResultLauncher<Void> pickContact = registerForActivityResult(new ActivityResultContracts.PickContact(), new ActivityResultCallback<Uri>() {
@@ -125,7 +122,6 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         }
     });
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
@@ -141,8 +137,8 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         }, 2000);
         viewModel = new ViewModelProvider(this).get(USSDViewModel.class);
         ussdRecycler = findViewById(R.id.ussd_recycler_view);
-        toolGridview = findViewById(R.id.tool_grid_view);
-        toolbar = findViewById(R.id.toolbar);
+        GridView toolGridview = findViewById(R.id.tool_grid_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ToolsAdapter toolsAdapter = new ToolsAdapter(context, List.of(

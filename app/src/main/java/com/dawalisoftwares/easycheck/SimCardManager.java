@@ -66,8 +66,8 @@ public class SimCardManager {
         return (Activity) getContext();
     }
 
-    private void requestPermissions(String[] permissions, int code){
-        ActivityCompat.requestPermissions(getActivity(),permissions,code);
+    private void requestPermissions(String[] permissions){
+        ActivityCompat.requestPermissions(getActivity(),permissions, INFO.READ_PHONE_STATE_REQUEST);
     }
 
     private boolean hasPermissionTo(String permission){
@@ -88,7 +88,7 @@ public class SimCardManager {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},INFO.READ_PHONE_STATE_REQUEST);
+                                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE});
                             }
                         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
@@ -97,13 +97,13 @@ public class SimCardManager {
                             }
                         }).create().show();
             }else {
-                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},INFO.READ_PHONE_STATE_REQUEST);
+                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE});
             }
             return null;
         }
         SubscriptionInfo subscriptionInfo = subscriptionManager.getActiveSubscriptionInfoForSimSlotIndex(simSlot);
         if (subscriptionInfo != null){
-            String name = subscriptionInfo.getCarrierName().toString();
+            String name = subscriptionInfo.getCarrierName().toString().split(" ")[0];
             String mnc = "",mcc = "";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 mnc = subscriptionInfo.getMncString();
