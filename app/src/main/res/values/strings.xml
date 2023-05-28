@@ -2,7 +2,7 @@
     <string name="app_name">Easy Check</string>
     <string name="simname">simName</string>
     <string name="link">LINK</string>
-    <string name="select_sim">SELECT SIM</string>
+    <string name="select_sim">Select Sim</string>
     <string name="android_app_specialist">Android App Specialist</string>
     <string name="bank_name">Access Bank</string>
     <string name="large_text">
@@ -130,4 +130,5 @@ Easy Check 1.2 Bug fixes"</string>
     <string name="recharge">Recharge</string>
     <string name="charges_apply">Charges apply</string>
     <string name="glo_check_number_tip">First select \"My tariff plan\" then select \"My number\"</string>
+    <string name="contact_permission">Easy Check requires access to your contacts list. This is necessary for the app to perform its intended functions. Be rest assured that Easy Check takes your privacy and security seriously and will only use this information for the purpose of providing you with a better app experience</string>
 </resources>

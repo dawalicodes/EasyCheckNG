@@ -1,22 +1,19 @@
 package com.dawalisoftwares.easycheck
 
-import android.content.Context
-import android.graphics.*
-import android.media.Image
-import android.media.Image.Plane
+import android.graphics.Bitmap
+import android.graphics.RectF
 import android.os.Bundle
-import android.renderscript.Allocation
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicYuvToRGB
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
-import androidx.camera.core.Camera
+import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
 import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.camera.view.TransformExperimental
+import androidx.camera.view.transform.CoordinateTransform
 import androidx.camera.view.transform.ImageProxyTransformFactory
 import androidx.camera.view.transform.OutputTransform
 import androidx.core.content.ContextCompat
@@ -27,7 +24,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 import java.util.concurrent.Executors
 
@@ -45,6 +41,7 @@ class ScanCardActivity : AppCompatActivity() {
     private lateinit var capture: ImageCapture
     private lateinit var sampleImage: ImageView
     private lateinit var box: ImageView
+    private var source: OutputTransform? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_card)
@@ -55,25 +52,32 @@ class ScanCardActivity : AppCompatActivity() {
         sampleImage = findViewById(R.id.sample_image)
         box = findViewById(R.id.image_box)
 
-        var source: OutputTransform? = preveiwView.outputTransform
         imageAnalysis =
-            ImageAnalysis.Builder().setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST).build()
+            ImageAnalysis.Builder().setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST)
+                .setOutputImageFormat(OUTPUT_IMAGE_FORMAT_RGBA_8888).build()
         analysis = ImageAnalysis.Analyzer { imageProxy ->
-            val mediaImage = imageProxy.image
-            if (mediaImage != null) {
-                val target: OutputTransform =
-                    ImageProxyTransformFactory().getOutputTransform(imageProxy)
 
-                val rect = Rect(box.left, box.top, box.right, box.bottom)
-                val croppedImage = cropImage(image = mediaImage, rect)
-                val inputImage: InputImage = InputImage.fromBitmap(croppedImage, imageProxy.imageInfo.rotationDegrees)
+            val target: OutputTransform =
+                ImageProxyTransformFactory().getOutputTransform(imageProxy)
+            runOnUiThread { source = preveiwView.outputTransform }
+            if (source != null) {
+                val coordinateTransform = CoordinateTransform(source!!, target)
+                val rect = RectF(
+                    box.left.toFloat(),
+                    box.top.toFloat(),
+                    box.right.toFloat(),
+                    box.bottom.toFloat()
+                )
+                coordinateTransform.mapRect(rect)
+                val croppedImage = cropImage(imageProxy, rect)
+                val inputImage: InputImage =
+                    InputImage.fromBitmap(croppedImage, imageProxy.imageInfo.rotationDegrees)
                 runOnUiThread { sampleImage.setImageBitmap(croppedImage) }
                 recognizer.process(inputImage).addOnSuccessListener { text ->
-
+                    Toast.makeText(applicationContext, text.text, Toast.LENGTH_SHORT).show()
                 }.addOnCompleteListener { imageProxy.close() }
-
-
             }
+
         }
         imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor(), analysis)
 
@@ -90,7 +94,7 @@ class ScanCardActivity : AppCompatActivity() {
             )
         }
 
-
+        source = preveiwView.outputTransform
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
@@ -108,21 +112,30 @@ class ScanCardActivity : AppCompatActivity() {
 
     }
 
-    private fun cropImage(image: Image, rect: Rect): Bitmap {
-        val buffer: ByteBuffer = image.planes[0].buffer
-        val data = ByteArray(buffer.remaining())
-        buffer.get(data)
-        val bitmapImage: Bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-        return Bitmap.createBitmap(bitmapImage, rect.left, rect.top, rect.width(), rect.height())
-    }
+    private fun cropImage(image: ImageProxy, rect: RectF): Bitmap {
+        val planes: Array<out ImageProxy.PlaneProxy> = image.planes
+        val plane = planes[0]
 
+        val buffer = plane.buffer
 
-    private fun image2ByteArray(image: Image): ByteArray {
-        val planes = image.planes
-        val buffer = planes[0].buffer
-        val bytes = ByteArray(buffer.remaining())
-        buffer.get(bytes)
-        return bytes
+        val width = image.width
+        val height = image.height
+        val rowStride = plane.rowStride
+
+        val bufferSize = rowStride * height
+        val data = ByteArray(bufferSize)
+        buffer[data]
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(data))
+
+        return Bitmap.createBitmap(
+            bitmap,
+            rect.left.toInt(),
+            rect.top.toInt(),
+            rect.width().toInt(),
+            rect.height().toInt()
+        )
     }
 
 

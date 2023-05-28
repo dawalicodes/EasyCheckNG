@@ -1,21 +1,34 @@
 package com.dawalisoftwares.easycheck;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.camera.view.TransformExperimental;
 import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,23 +37,48 @@ import com.dawalisoftwares.easycheck.adapters.Tool;
 import com.dawalisoftwares.easycheck.adapters.ToolsAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDItemDecorator;
+import com.dawalisoftwares.easycheck.banks.AccessBank;
+import com.dawalisoftwares.easycheck.banks.ECOBank;
+import com.dawalisoftwares.easycheck.banks.FCMB;
+import com.dawalisoftwares.easycheck.banks.FidelityBank;
+import com.dawalisoftwares.easycheck.banks.FirstBank;
+import com.dawalisoftwares.easycheck.banks.GTBank;
+import com.dawalisoftwares.easycheck.banks.HeritageBank;
+import com.dawalisoftwares.easycheck.banks.KeyStoneBank;
+import com.dawalisoftwares.easycheck.banks.Opay;
+import com.dawalisoftwares.easycheck.banks.PalmPay;
+import com.dawalisoftwares.easycheck.banks.PolarisBank;
+import com.dawalisoftwares.easycheck.banks.StanbicBank;
+import com.dawalisoftwares.easycheck.banks.SterlingBank;
+import com.dawalisoftwares.easycheck.banks.UBA;
+import com.dawalisoftwares.easycheck.banks.UnionBank;
+import com.dawalisoftwares.easycheck.banks.UnityBank;
+import com.dawalisoftwares.easycheck.banks.WemaBank;
+import com.dawalisoftwares.easycheck.banks.ZenithBank;
 import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.BankServiceBottomSheet;
 import com.dawalisoftwares.easycheck.fragments.NetworkLookUpReveal;
+import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.fragments.SelectSimReveal;
+import com.dawalisoftwares.easycheck.interfaces.Bank;
 import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
+import com.dawalisoftwares.easycheck.interfaces.OnPickContact;
 import com.dawalisoftwares.easycheck.interfaces.OnSimSelected;
+import com.dawalisoftwares.easycheck.view.USSDViewModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-@TransformExperimental public class USSDActivity extends AppCompatActivity implements OnSimSelected {
+@TransformExperimental
+public class USSDActivity extends AppCompatActivity implements OnSimSelected, OnPickContact {
 
     RecyclerView ussdRecycler;
     USSDAdapter adapter;
@@ -51,6 +89,41 @@ import java.util.TimerTask;
     private LinearLayoutManager ussdLayoutManager;
     private int opened = -1;
     private GridView toolGridview;
+    private USSDViewModel viewModel;
+    private Toolbar toolbar;
+    private List<Bank> banks;
+
+    ActivityResultLauncher<Void> pickContact = registerForActivityResult(new ActivityResultContracts.PickContact(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri result) {
+            if (result != null) {
+                ContentResolver contentResolver = getContentResolver();
+                Cursor cursor = contentResolver.query(result, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+                    String contactsId = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    Cursor phoneCursor = contentResolver.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{contactsId},
+                            null);
+                    if (phoneCursor != null && phoneCursor.moveToFirst()) {
+                        int phoneColumnIndex = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                        String phoneNumber = phoneCursor.getString(phoneColumnIndex);
+                        phoneCursor.close();
+                        viewModel.setPhoneNumber(phoneNumber);
+                    } else {
+                        Toast.makeText(context, "No Phone Number Found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    });
 
 
     @Override
@@ -66,16 +139,26 @@ import java.util.TimerTask;
                 done = true;
             }
         }, 2000);
-
+        viewModel = new ViewModelProvider(this).get(USSDViewModel.class);
         ussdRecycler = findViewById(R.id.ussd_recycler_view);
         toolGridview = findViewById(R.id.tool_grid_view);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ToolsAdapter toolsAdapter = new ToolsAdapter(context,List.of(
-                new Tool("Bee",R.drawable.stanbic_bank,"description"),
-                new Tool("Mail",R.drawable.union_bank,""),
-                new Tool("About",R.drawable.access_bank,""),
-                new Tool("About",R.drawable.access_bank,"")
-                ));
+        ToolsAdapter toolsAdapter = new ToolsAdapter(context, List.of(
+                new Tool(INFO.BEE, R.drawable.bee_two, "No one can call your line, except the ones you select."),
+                new Tool(INFO.USSD_CODES, R.drawable.hash, "View and dial other ussd codes."),
+                new Tool(INFO.SCAN_CARD, R.drawable.scan_card, "Load recharge card by scanning the card."),
+                new Tool(INFO.ABOUT, R.drawable.about, "Stay up to date, and get more apps from Dsoftware.")
+        ));
+        toolGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Tool tool = (Tool) adapterView.getItemAtPosition(i);
+
+            }
+        });
+
         toolGridview.setAdapter(toolsAdapter);
 
         ussdLayoutManager = new LinearLayoutManager(context) {
@@ -93,28 +176,48 @@ import java.util.TimerTask;
         ussdRecycler.setHasFixedSize(false);
 
 
-
         simCardManager = SimCardManager.getInstance(USSDActivity.this);
 
+        banks = Arrays.asList(
+                new AccessBank(),
+                new ECOBank(),
+                new FCMB(),
+                new FirstBank(),
+                new FidelityBank(),
+                new GTBank(),
+                new HeritageBank(),
+                new KeyStoneBank(),
+                new Opay(),
+                new PalmPay(),
+                new PolarisBank(),
+                new StanbicBank(),
+                new SterlingBank(),
+                new UBA(),
+                new UnionBank(),
+                new UnityBank(),
+                new WemaBank(),
+                new ZenithBank()
+        );
+
         items = new ArrayList<>();
-        items.add(new Item(R.drawable.ic_account_balance, INFO.CHECK_AIRTIME_BALANCE, "Checks your account balance."));
-        items.add(new Item(R.drawable.ic_data_usage, INFO.CHECK_DATA_BALANCE, "Checks your data bundle balance"));
-        items.add(new Item(R.drawable.ic_phone_outline, INFO.CHECK_PHONE_NUMBER, "Checks your phone number"));
-        items.add(new Item(R.drawable.ic_confirmation_number, INFO.CHECK_NIN, "Retrieve or link your national identification number"));
-        items.add(new Item(R.drawable.ic_settings_outline, INFO.CHECK_TARIFF_PLAN, "See what tariff plan you're subscribed to"));
-        items.add(new Item(R.drawable.ic_settings_outline, INFO.PRIVATE_NUMBER, "Stay anonymous by hiding your number"));
-        items.add(new Item(R.drawable.ic_settings_outline, INFO.NETWORK_LOOKUP, "checks a phone number network"));
-        items.add(new Item(R.drawable.ic_baseline_add_circle_outline_24, INFO.LOAD_AIRTIME, "Load airtime[recharge card]"));
-        items.add(new Item(R.drawable.ic_baseline_business_24, INFO.LOAD_AIRTIME_FROM_BANK, "Recharge directly from your bank account"));
-        items.add(new Item(R.drawable.ic_baseline_business_24, INFO.BANK_SERVICE, "perform normal bank operations"));
-        items.add(new Item(R.drawable.ic_baseline_wifi_24, INFO.BUY_DATA, "Buy a data bundle"));
-        items.add(new Item(R.drawable.ic_baseline_money_24, INFO.BORROW_AIRTIME, "Borrow airtime and pay on your next recharge"));
-        items.add(new Item(R.drawable.ic_data_usage, INFO.BORROW_DATA, "Borrow data and pay on your next recharge"));
-        items.add(new Item(R.drawable.ic_confirmation_number, INFO.TRANSFER_AIRTIME, "Transfer airtime to other phone number on your network"));
-        items.add(new Item(R.drawable.ic_confirmation_number, INFO.TRANSFER_DATA, "Transfer data to other phone number on your network"));
-        items.add(new Item(R.drawable.ic_baseline_people_outline_24, INFO.CALL_CUSTOMER_CARE, "Place a call to ISP customer care"));
-        items.add(new Item(R.drawable.ic_baseline_engineering_24, INFO.SELF_SERVICE, "Self service."));
-        items.add(new Item(R.drawable.ic_baseline_settings_backup_restore_24, INFO.CANCEL_AUTO_RENEW, "Stop services from automatically renewing."));
+        items.add(new Item(R.drawable.airtime_balance, INFO.CHECK_AIRTIME_BALANCE, "Checks your account balance."));
+        items.add(new Item(R.drawable.data_balance, INFO.CHECK_DATA_BALANCE, "Checks your data bundle balance"));
+        items.add(new Item(R.drawable.phone_number, INFO.CHECK_PHONE_NUMBER, "Checks your phone number"));
+        items.add(new Item(R.drawable.verify_person, INFO.CHECK_NIN, "Retrieve or link your national identification number"));
+        items.add(new Item(R.drawable.tariff_plan, INFO.CHECK_TARIFF_PLAN, "See what tariff plan you're subscribed to"));
+        items.add(new Item(R.drawable.pivate_number, INFO.PRIVATE_NUMBER, "Stay anonymous by hiding your number"));
+        items.add(new Item(R.drawable.network_lookup, INFO.NETWORK_LOOKUP, "checks a phone number network"));
+        items.add(new Item(R.drawable.top_up, INFO.LOAD_AIRTIME, "Load airtime[recharge card]"));
+        items.add(new Item(R.drawable.airtime_from_bank, INFO.LOAD_AIRTIME_FROM_BANK, "Recharge directly from your bank account"));
+        items.add(new Item(R.drawable.bank, INFO.BANK_SERVICE, "perform normal bank operations"));
+        items.add(new Item(R.drawable.buy_data, INFO.BUY_DATA, "Buy a data bundle"));
+        items.add(new Item(R.drawable.borrow_airtime, INFO.BORROW_AIRTIME, "Borrow airtime and pay on your next recharge"));
+        items.add(new Item(R.drawable.borrow_data, INFO.BORROW_DATA, "Borrow data and pay on your next recharge"));
+        items.add(new Item(R.drawable.transfer_airtime, INFO.TRANSFER_AIRTIME, "Transfer airtime to other phone number on your network"));
+        items.add(new Item(R.drawable.transfer_data, INFO.TRANSFER_DATA, "Transfer data to other phone number on your network"));
+        items.add(new Item(R.drawable.c_care, INFO.CALL_CUSTOMER_CARE, "Place a call to ISP customer care"));
+        items.add(new Item(R.drawable.self_service, INFO.SELF_SERVICE, "Self service."));
+        items.add(new Item(R.drawable.auto_renew, INFO.CANCEL_AUTO_RENEW, "Stop services from automatically renewing."));
         adapter = new USSDAdapter(items);
         ussdRecycler.addItemDecoration(new USSDItemDecorator());
         adapter.setOnItemClickListener((view, action, description, position) -> {
@@ -124,26 +227,34 @@ import java.util.TimerTask;
                 int numberOfActiveSim = simCardManager.getNumberOfActiveSims();
                 List<Sim> sims = simCardManager.getActiveSimCards();
                 if (numberOfActiveSim > 0) {
-                    if (action.equals(INFO.LOAD_AIRTIME)) {
-                        if (ContextCompat.checkSelfPermission(context,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                            startActivity(new Intent(context,ScanCardActivity.class));
-                        }else {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                                showPermissionRationale(new String[]{Manifest.permission.CAMERA},INFO.CAMERA_REQUEST_CODE,getString(R.string.request_rationale_camera));
-                            }else {
-                                requestPermissions(new String[] {Manifest.permission.CAMERA},INFO.CAMERA_REQUEST_CODE);
+                    switch (action) {
+                        case INFO.LOAD_AIRTIME:
+                            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                                startActivity(new Intent(context, ScanCardActivity.class));
+                            } else {
+                                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                                    showPermissionRationale(new String[]{Manifest.permission.CAMERA}, INFO.CAMERA_REQUEST_CODE, getString(R.string.request_rationale_camera));
+                                } else {
+                                    requestPermissions(new String[]{Manifest.permission.CAMERA}, INFO.CAMERA_REQUEST_CODE);
+                                }
                             }
-                        }
-                    } else if (action.equals(INFO.LOAD_AIRTIME_FROM_BANK)) {
-                        addAndReAdjust(view, position, new BankAirtimeReveal(sims));
-                    } else if (action.equals(INFO.NETWORK_LOOKUP)) {
-                        addAndReAdjust(view, position, new NetworkLookUpReveal());
-                    } else {
-                        if (numberOfActiveSim == 1) {
-                            onSimSelected(sims.get(0), null, action);
-                        } else {
-                            addAndReAdjust(view, position, new SelectSimReveal(sims, action, null));
-                        }
+                            break;
+                        case INFO.LOAD_AIRTIME_FROM_BANK:
+                            addAndReAdjust(view, position, new BankAirtimeReveal(sims));
+                            break;
+                        case INFO.NETWORK_LOOKUP:
+                            addAndReAdjust(view, position, new NetworkLookUpReveal());
+                            break;
+                        case INFO.PRIVATE_NUMBER:
+                            addAndReAdjust(view, position, new PrivateNumberReveal(sims, action));
+                            break;
+                        default:
+                            if (numberOfActiveSim == 1) {
+                                onSimSelected(sims.get(0), null, action);
+                            } else {
+                                addAndReAdjust(view, position, new SelectSimReveal(sims, action, null));
+                            }
+                            break;
                     }
 
                 } else {
@@ -156,7 +267,7 @@ import java.util.TimerTask;
                 }
             } else {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE) || shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
-                    showPermissionRationale(new String[] {Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE},INFO.READ_PHONE_STATE_CALL_PHONE_REQUEST,getString(R.string.request_rationale_one));
+                    showPermissionRationale(new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE}, INFO.READ_PHONE_STATE_CALL_PHONE_REQUEST, getString(R.string.request_rationale_one));
                 } else {
                     requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE}, INFO.READ_PHONE_STATE_CALL_PHONE_REQUEST);
                 }
@@ -173,7 +284,7 @@ import java.util.TimerTask;
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermissions(permissions,code);
+                        requestPermissions(permissions, code);
                     }
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -188,7 +299,7 @@ import java.util.TimerTask;
             int temp = opened;
             removeReveal(view, getRevealPosition());
             if (temp < position) {
-                addReveal(view,easyReveal, position);
+                addReveal(view, easyReveal, position);
             } else {
                 addReveal(view, easyReveal, position + 1);
             }
@@ -223,7 +334,7 @@ import java.util.TimerTask;
         items.add(position, reveal);
         adapter.notifyItemInserted(position);
         MaterialCardView cardView = (MaterialCardView) view;
-        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.ROUNDED,0).setBottomLeftCorner(CornerFamily.ROUNDED,0).build();
+        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.ROUNDED, 0).setBottomLeftCorner(CornerFamily.ROUNDED, 0).build();
         cardView.setShapeAppearanceModel(cardAppearance);
 
         if (ussdLayoutManager.findLastCompletelyVisibleItemPosition() < position) {
@@ -236,9 +347,22 @@ import java.util.TimerTask;
         items.remove(position);
         adapter.notifyItemRemoved(position);
         MaterialCardView cardView = (MaterialCardView) view;
-        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.ROUNDED,8).setBottomLeftCorner(CornerFamily.ROUNDED,8).build();
+        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.ROUNDED, 8).setBottomLeftCorner(CornerFamily.ROUNDED, 8).build();
         cardView.setShapeAppearanceModel(cardAppearance);
         setRevealPosition(-1);
+    }
+
+    @Override
+    public void onPick() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                showPermissionRationale(new String[]{Manifest.permission.READ_CONTACTS}, INFO.READ_CONTACT_REQUEST, getResources().getString(R.string.contact_permission));
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, INFO.READ_CONTACT_REQUEST);
+            }
+        } else {
+            pickContact.launch(null);
+        }
     }
 
 
@@ -272,8 +396,8 @@ import java.util.TimerTask;
                     sim.getNetwork().borrowData(sim, bundle);
                     break;
                 case INFO.BANK_SERVICE:
-                    BankServiceBottomSheet bankServiceBottomSheet = new BankServiceBottomSheet(sim);
-                    bankServiceBottomSheet.setStyle(DialogFragment.STYLE_NORMAL,R.style.bottomSheet);
+                    BankServiceBottomSheet bankServiceBottomSheet = new BankServiceBottomSheet(sim,banks);
+                    bankServiceBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.bottomSheet);
                     bankServiceBottomSheet.show(getSupportFragmentManager(), "bankService");
                     break;
                 case INFO.CANCEL_AUTO_RENEW:
@@ -292,24 +416,19 @@ import java.util.TimerTask;
                     sim.getNetwork().nationalNumber(sim, bundle);
                     break;
                 case INFO.PRIVATE_NUMBER:
-                    // TODO: 5/24/23
+                    sim.getNetwork().privateNumber(sim, bundle);
                     break;
                 case INFO.TRANSFER_AIRTIME:
-                    sim.getNetwork().transferAirtime(sim,bundle);
+                    sim.getNetwork().transferAirtime(sim, bundle);
                     break;
                 case INFO.TRANSFER_DATA:
-                    sim.getNetwork().transferData(sim,bundle);
+                    sim.getNetwork().transferData(sim, bundle);
                     break;
             }
 
         } else {
             new MaterialAlertDialogBuilder(context).setMessage("This Sim card is not supported")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE}, INFO.READ_PHONE_STATE_CALL_PHONE_REQUEST);
-                        }
-                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
@@ -323,7 +442,24 @@ import java.util.TimerTask;
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == INFO.CAMERA_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startActivity(new Intent(context,ScanCardActivity.class));
+            startActivity(new Intent(context, ScanCardActivity.class));
+        } else if (requestCode == INFO.READ_CONTACT_REQUEST && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            pickContact.launch(null);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.phone) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:")));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
     }
 }

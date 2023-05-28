@@ -31,6 +31,13 @@ public class INFO {
     public static final String NETWORK_NAME_MTN = "MTN";
     public static final String NETWORK_NAME_GLO = "GLO";
     public static final String NETWORK_NAME_MOBILE = "9MOBILE";
+    public static final String BEE = "Bee";
+    public static final String USSD_CODES = "Codes";
+    public static final String SCAN_CARD = "Recharge";
+    public static final String ABOUT = "About";
     public static final int READ_PHONE_STATE_REQUEST = 3;
     public static final int READ_PHONE_STATE_CALL_PHONE_REQUEST = 93;
+    public static final int READ_CONTACT_REQUEST = 973;
+
+
 }

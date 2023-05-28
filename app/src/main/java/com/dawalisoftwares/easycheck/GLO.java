@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -90,7 +92,7 @@ public class GLO implements Network {
 
     @Override
     public void transferAirtime(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*321#",null);
+        Uri uri = Uri.fromParts("tel", "*131#",null);
         placeCall(sim,uri);
     }
 
@@ -102,8 +104,22 @@ public class GLO implements Network {
 
     @Override
     public void cancelAutoRenew(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*305#",null);
-        placeCall(sim,uri);
+
+        new MaterialAlertDialogBuilder(context).setMessage("Send \"CANCEL\" to 127")
+                .setTitle("Tips")
+                .setPositiveButton("send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO,Uri.parse("smsto:127"));
+                        intent.putExtra("sms_body","CANCEL");
+                        context.startActivity(intent);
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).create().show();
     }
 
     @Override
@@ -125,7 +141,10 @@ public class GLO implements Network {
 
     @Override
     public void privateNumber(@Nullable Sim sim, @Nullable Bundle bundle) {
-
+        if (bundle != null) {
+            String phone = bundle.getString(PrivateNumberReveal.Companion.getPhonekey());
+            placeCall(sim,Uri.fromParts("tel","#31#" + phone,null));
+        }
     }
 
     @Override

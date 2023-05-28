@@ -83,6 +83,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
                 app:layout_collapseMode="pin"
@@ -111,7 +112,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="@dimen/spacing_small"
-                            android:src="@drawable/access_bank"/>
+                            android:src="@mipmap/ic_launcher_round"/>
                     </com.google.android.material.card.MaterialCardView>
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"

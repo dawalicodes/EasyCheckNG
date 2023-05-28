@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -136,7 +137,10 @@ public class Airtel implements Network {
 
     @Override
     public void privateNumber(@Nullable Sim sim, @Nullable Bundle bundle) {
-
+        if (bundle != null) {
+            String phone = bundle.getString(PrivateNumberReveal.Companion.getPhonekey());
+            placeCall(sim,Uri.fromParts("tel","#31#" + phone,null));
+        }
     }
 
     @Override

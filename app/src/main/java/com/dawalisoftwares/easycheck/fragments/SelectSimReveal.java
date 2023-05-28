@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.dawalisoftwares.easycheck.R;
 import com.dawalisoftwares.easycheck.Sim;
 import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
@@ -35,7 +37,7 @@ public class SelectSimReveal extends EasyReveal {
     }
 
     @Override
-    protected View onCreateView(ViewGroup viewGroup, LayoutInflater layoutInflater) {
+    protected View onCreateView(ViewGroup viewGroup, @NonNull LayoutInflater layoutInflater) {
         View view = null;
         if (simCards.size() > 1) {
             view = layoutInflater.inflate(R.layout.sim_disambiguity, viewGroup, false);
@@ -50,13 +52,13 @@ public class SelectSimReveal extends EasyReveal {
             simOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onSimSelected.onSimSelected(simCards.get(0), bundle, action);
+                    simOneClick();
                 }
             });
             simTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onSimSelected.onSimSelected(simCards.get(1), bundle, action);
+                    simTwoClick();
                 }
             });
         } else  {
@@ -65,7 +67,7 @@ public class SelectSimReveal extends EasyReveal {
             sim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onSimSelected.onSimSelected(simCards.get(0),bundle,action);
+                    simOneClick();
                 }
             });
 
@@ -73,5 +75,12 @@ public class SelectSimReveal extends EasyReveal {
         return view;
     }
 
+    public void simOneClick() {
+        onSimSelected.onSimSelected(simCards.get(0),bundle,action);
+    }
+
+    public void simTwoClick() {
+        onSimSelected.onSimSelected(simCards.get(1),bundle,action);
+    }
 
 }

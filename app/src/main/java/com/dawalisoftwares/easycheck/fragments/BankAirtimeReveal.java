@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dawalisoftwares.easycheck.INFO;
@@ -26,7 +27,7 @@ public class BankAirtimeReveal extends EasyReveal {
     }
 
     @Override
-    protected View onCreateView(ViewGroup viewGroup, LayoutInflater layoutInflater) {
+    protected View onCreateView(ViewGroup viewGroup, @NonNull LayoutInflater layoutInflater) {
         View view = layoutInflater.inflate(R.layout.airtime_from_bank,viewGroup,false);
         EasyReveal easyReveal = new SelectSimReveal(sims, INFO.LOAD_AIRTIME_FROM_BANK,new Bundle());
         ConstraintLayout simHolder = view.findViewById(R.id.sim_place_holder);

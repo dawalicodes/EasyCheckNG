@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 public abstract class EasyReveal {
     protected boolean viewCreated = false;
     protected abstract void onCreate(Context context);
-    protected abstract View onCreateView(ViewGroup view, LayoutInflater layoutInflater);
+    protected abstract View onCreateView(ViewGroup view, @NonNull LayoutInflater layoutInflater);
     protected void onViewCreated(){
         viewCreated = true;
     }
@@ -18,7 +20,7 @@ public abstract class EasyReveal {
     }
     public void addToView(ViewGroup viewGroup){
        onCreate(viewGroup.getContext());
-       View view = this.onCreateView(viewGroup, LayoutInflater.from(viewGroup.getContext()));
+       View view = this.onCreateView(viewGroup,LayoutInflater.from(viewGroup.getContext()));
        onViewCreated();
        viewGroup.addView(view);
     }

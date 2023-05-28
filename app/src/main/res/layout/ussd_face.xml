@@ -35,7 +35,7 @@
                 android:layout_width="35dip"
                 android:layout_height="35dip"
                 android:layout_gravity="center"
-                android:src="@drawable/access_bank" />
+                android:src="@mipmap/ic_launcher" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -82,6 +82,7 @@
             android:clickable="false"
             android:focusable="false"
             android:padding="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_medium"
             app:chipMinTouchTargetSize="@dimen/spacing_xsmall"
             app:chipMinHeight="@dimen/spacing_large"
             android:text="@string/charges_apply"

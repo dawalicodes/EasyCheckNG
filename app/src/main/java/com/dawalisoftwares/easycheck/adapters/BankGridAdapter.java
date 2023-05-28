@@ -12,14 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
-import com.dawalisoftwares.easycheck.Bank;
 import com.dawalisoftwares.easycheck.R;
+import com.dawalisoftwares.easycheck.interfaces.Bank;
 import com.dawalisoftwares.easycheck.interfaces.OnBankSelectedListener;
 
 import java.util.List;
 
 public class BankGridAdapter extends ArrayAdapter<Bank> {
-    private OnBankSelectedListener bankSelectedListener;
+    private final OnBankSelectedListener bankSelectedListener;
     public BankGridAdapter(@NonNull Context context, int resource, @NonNull List<Bank> banks, OnBankSelectedListener bankSelectedListener) {
         super(context, resource, banks);
         this.bankSelectedListener = bankSelectedListener;
@@ -32,12 +32,7 @@ public class BankGridAdapter extends ArrayAdapter<Bank> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.bank_face,parent,false);
         }
         LinearLayoutCompat bankFace = convertView.findViewById(R.id.bank_face_parent);
-        bankFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bankSelectedListener.bankSelected(getItem(position));
-            }
-        });
+        bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(getItem(position)));
         AppCompatImageView logo = convertView.findViewById(R.id.bank_logo);
         logo.setImageResource(getItem(position).getLogo());
         TextView name = convertView.findViewById(R.id.bank_name);
