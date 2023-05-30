@@ -15,10 +15,11 @@
         android:theme="@style/AppTheme.AppBarOverlay">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:tabGravity="fill"
+            app:tabIconTint="@null"
             app:tabIndicatorColor="@color/deep_orange_500"
             app:tabIndicatorHeight="3.0dip"
             app:tabMode="fixed"

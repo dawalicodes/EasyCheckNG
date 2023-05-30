@@ -35,6 +35,8 @@ public class INFO {
     public static final String USSD_CODES = "Codes";
     public static final String SCAN_CARD = "Recharge";
     public static final String ABOUT = "About";
+    public static final String AD_PREF = "AD_FREFS";
+    public static final String AD_PREF_KEY = "AD_FREF_KEY";
     public static final int READ_PHONE_STATE_REQUEST = 3;
     public static final int READ_PHONE_STATE_CALL_PHONE_REQUEST = 93;
     public static final int READ_CONTACT_REQUEST = 973;

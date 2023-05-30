@@ -12,7 +12,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@id/toolbar"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@color/grey_50"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -33,8 +33,9 @@
             android:padding="@dimen/spacing_middle">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="2.0dip"
                 app:cardElevation="2.0dip"
                 app:cardUseCompatPadding="true">
@@ -65,7 +66,7 @@
                             android:layout_width="@dimen/spacing_xxlarge"
                             android:layout_height="@dimen/spacing_xxlarge"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_launcher_foreground" />
+                            android:src="@mipmap/ic_launcher_round" />
 
                         <View
                             android:layout_width="@dimen/spacing_large"
@@ -178,7 +179,8 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:id="@+id/privacy_policy"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:clickable="true"
@@ -206,7 +208,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="License"
+                            android:text="Privacy Policy"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>
@@ -218,9 +220,10 @@
                 android:layout_height="@dimen/spacing_middle" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="2.0dip"
                 app:cardElevation="2.0dip"
                 app:cardUseCompatPadding="true">
@@ -245,10 +248,11 @@
                         app:fontFamily="sans-serif-medium" />
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:clickable="true"
+                        android:id="@+id/author"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/spacing_xxlarge"
                         android:orientation="horizontal"
@@ -313,7 +317,7 @@
                             android:layout_width="@dimen/spacing_xmlarge"
                             android:layout_height="@dimen/spacing_xmlarge"
                             android:background="@android:color/transparent"
-                            app:srcCompat="@drawable/ic_launcher_background"
+                            app:srcCompat="@drawable/ic_baseline_mail_24"
                             app:tint="#ff87d3e0" />
 
                         <View
@@ -335,9 +339,10 @@
                 android:layout_height="@dimen/spacing_middle" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="2.0dip"
                 app:cardElevation="2.0dip"
                 app:cardUseCompatPadding="true">
@@ -362,7 +367,8 @@
                         app:fontFamily="sans-serif-medium" />
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
+                        android:id="@+id/company"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:clickable="true"
@@ -410,10 +416,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:clickable="true"
+                        android:id="@+id/location"
                         android:focusable="true"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/spacing_xxlarge"

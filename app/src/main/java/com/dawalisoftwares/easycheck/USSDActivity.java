@@ -65,6 +65,7 @@ import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
 import com.dawalisoftwares.easycheck.interfaces.OnPickContact;
 import com.dawalisoftwares.easycheck.interfaces.OnSimSelected;
 import com.dawalisoftwares.easycheck.view.USSDViewModel;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
@@ -140,7 +141,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         GridView toolGridview = findViewById(R.id.tool_grid_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        MobileAds.initialize(context);
         ToolsAdapter toolsAdapter = new ToolsAdapter(context, List.of(
                 new Tool(INFO.BEE, R.drawable.bee_two, "No one can call your line, except the ones you select."),
                 new Tool(INFO.USSD_CODES, R.drawable.hash, "View and dial other ussd codes."),
@@ -174,43 +175,27 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
 
         simCardManager = SimCardManager.getInstance(USSDActivity.this);
 
-        banks = Arrays.asList(
-                new AccessBank(),
-                new ECOBank(),
-                new FCMB(),
-                new FirstBank(),
-                new FidelityBank(),
-                new GTBank(),
-                new HeritageBank(),
-                new KeyStoneBank(),
-                new Opay(),
-                new PalmPay(),
-                new PolarisBank(),
-                new StanbicBank(),
-                new SterlingBank(),
-                new UBA(),
-                new UnionBank(),
-                new UnityBank(),
-                new WemaBank(),
-                new ZenithBank()
-        );
+        banks = Bank.Companion.getAllBanks();
 
         items = new ArrayList<>();
         items.add(new Item(R.drawable.airtime_balance, INFO.CHECK_AIRTIME_BALANCE, "Checks your account balance."));
         items.add(new Item(R.drawable.data_balance, INFO.CHECK_DATA_BALANCE, "Checks your data bundle balance"));
         items.add(new Item(R.drawable.phone_number, INFO.CHECK_PHONE_NUMBER, "Checks your phone number"));
+        items.add(new AD());
         items.add(new Item(R.drawable.verify_person, INFO.CHECK_NIN, "Retrieve or link your national identification number"));
         items.add(new Item(R.drawable.tariff_plan, INFO.CHECK_TARIFF_PLAN, "See what tariff plan you're subscribed to"));
         items.add(new Item(R.drawable.pivate_number, INFO.PRIVATE_NUMBER, "Stay anonymous by hiding your number"));
         items.add(new Item(R.drawable.network_lookup, INFO.NETWORK_LOOKUP, "checks a phone number network"));
         items.add(new Item(R.drawable.top_up, INFO.LOAD_AIRTIME, "Load airtime[recharge card]"));
         items.add(new Item(R.drawable.airtime_from_bank, INFO.LOAD_AIRTIME_FROM_BANK, "Recharge directly from your bank account"));
+        items.add(new AD());
         items.add(new Item(R.drawable.bank, INFO.BANK_SERVICE, "perform normal bank operations"));
         items.add(new Item(R.drawable.buy_data, INFO.BUY_DATA, "Buy a data bundle"));
         items.add(new Item(R.drawable.borrow_airtime, INFO.BORROW_AIRTIME, "Borrow airtime and pay on your next recharge"));
         items.add(new Item(R.drawable.borrow_data, INFO.BORROW_DATA, "Borrow data and pay on your next recharge"));
         items.add(new Item(R.drawable.transfer_airtime, INFO.TRANSFER_AIRTIME, "Transfer airtime to other phone number on your network"));
         items.add(new Item(R.drawable.transfer_data, INFO.TRANSFER_DATA, "Transfer data to other phone number on your network"));
+        items.add(new AD());
         items.add(new Item(R.drawable.c_care, INFO.CALL_CUSTOMER_CARE, "Place a call to ISP customer care"));
         items.add(new Item(R.drawable.self_service, INFO.SELF_SERVICE, "Self service."));
         items.add(new Item(R.drawable.auto_renew, INFO.CANCEL_AUTO_RENEW, "Stop services from automatically renewing."));
@@ -236,7 +221,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
                             }
                             break;
                         case INFO.LOAD_AIRTIME_FROM_BANK:
-                            addAndReAdjust(view, position, new BankAirtimeReveal(sims));
+                            addAndReAdjust(view, position, new BankAirtimeReveal(sims,banks));
                             break;
                         case INFO.NETWORK_LOOKUP:
                             addAndReAdjust(view, position, new NetworkLookUpReveal());

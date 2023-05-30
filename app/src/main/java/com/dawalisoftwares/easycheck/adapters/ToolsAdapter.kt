@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.TooltipCompat
 import androidx.camera.view.TransformExperimental
+import com.dawalisoftwares.easycheck.AboutApp
 import com.dawalisoftwares.easycheck.INFO
 import com.dawalisoftwares.easycheck.R
 import com.dawalisoftwares.easycheck.ScanCardActivity
@@ -32,7 +33,7 @@ import com.dawalisoftwares.easycheck.USSDCodes
                 INFO.BEE -> Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 INFO.USSD_CODES -> context.startActivity(Intent(context, USSDCodes::class.java))
                 INFO.SCAN_CARD -> context.startActivity(Intent(context, ScanCardActivity::class.java))
-                INFO.ABOUT -> {}
+                INFO.ABOUT -> {context.let { it.startActivity(Intent(it,AboutApp::class.java)) }}
             } }
         }
         return view;

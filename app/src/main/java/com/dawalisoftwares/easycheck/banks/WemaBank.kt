@@ -3,7 +3,7 @@ package com.dawalisoftwares.easycheck.banks
 import com.dawalisoftwares.easycheck.R
 import com.dawalisoftwares.easycheck.interfaces.Bank
 
-class WemaBank : Bank {
+class WemaBank : Bank() {
     override fun getName(): String {
         return Bank.WEMA_BANK
     }

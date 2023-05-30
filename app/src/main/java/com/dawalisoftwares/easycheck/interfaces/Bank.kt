@@ -1,6 +1,9 @@
 package com.dawalisoftwares.easycheck.interfaces
 
-interface Bank {
+import com.dawalisoftwares.easycheck.banks.*
+import java.util.*
+
+abstract class Bank {
     companion object {
         const val ACCESS_BANK = "Access Bank"
         const val ECO_BANK = "ECO Bank"
@@ -20,9 +23,34 @@ interface Bank {
         const val UNITY_BANK = "Unity"
         const val WEMA_BANK = "Wema"
         const val ZENITH_BANK = "Zenith"
+
+        fun getAllBanks() : List<Bank> {
+            return listOf(
+                AccessBank(),
+                ECOBank(),
+                FCMB(),
+                FirstBank(),
+                FidelityBank(),
+                GTBank(),
+                HeritageBank(),
+                KeyStoneBank(),
+                Opay(),
+                PalmPay(),
+                PolarisBank(),
+                StanbicBank(),
+                SterlingBank(),
+                UBA(),
+                UnionBank(),
+                UnityBank(),
+                WemaBank(),
+                ZenithBank()
+            )
+        }
     }
 
-    fun getName() : String
-    fun getCode() : String
-    fun getLogo() : Int
+    abstract fun getName() : String
+    abstract fun getCode() : String
+    abstract fun getLogo() : Int
+
+
 }

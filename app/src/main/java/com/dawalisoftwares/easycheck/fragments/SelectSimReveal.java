@@ -1,13 +1,16 @@
 package com.dawalisoftwares.easycheck.fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
+import com.dawalisoftwares.easycheck.INFO;
 import com.dawalisoftwares.easycheck.R;
 import com.dawalisoftwares.easycheck.Sim;
 import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
@@ -20,8 +23,8 @@ import java.util.List;
 public class SelectSimReveal extends EasyReveal {
 
     List<Sim> simCards;
-    private String action;
-    private Bundle bundle;
+    private final String action;
+    private final Bundle bundle;
     private OnSimSelected onSimSelected;
 
     public SelectSimReveal(List<Sim> simCards,String action, Bundle bundle) {
@@ -42,13 +45,10 @@ public class SelectSimReveal extends EasyReveal {
         if (simCards.size() > 1) {
             view = layoutInflater.inflate(R.layout.sim_disambiguity, viewGroup, false);
             MaterialButton simOne, simTwo;
-            MaterialTextView simOneName, simTwoName;
             simOne = view.findViewById(R.id.sim_one);
             simTwo = view.findViewById(R.id.sim_two);
-            simOneName = view.findViewById(R.id.sim_one_name);
-            simTwoName = view.findViewById(R.id.sim_two_name);
-            simOneName.setText(simCards.get(0).getName().toUpperCase());
-            simTwoName.setText(simCards.get(1).getName().toUpperCase());
+            simOne.setText(simCards.get(0).getName());
+            simTwo.setText(simCards.get(1).getName());
             simOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

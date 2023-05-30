@@ -1,5 +1,6 @@
 package com.dawalisoftwares.easycheck.adapters;
 
+import android.net.ipsec.ike.IkeIpv4AddrIdentification;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +20,9 @@ import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
 import com.dawalisoftwares.easycheck.interfaces.ItemClickListener;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.shape.CornerFamily;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -35,7 +32,6 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public USSDAdapter(ArrayList<Object> items) {
         this.items = items;
     }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -79,6 +75,15 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             EasyReveal reveal = (EasyReveal) items.get(actionViewHolder.getAdapterPosition());
             actionViewHolder.actionContainer.removeAllViews();
             reveal.addToView(actionViewHolder.actionContainer);
+        }else if (getItemViewType(position) == INFO.VIEW_TYPE_AD) {
+            AdViewHolder adViewHolder = (AdViewHolder) holder;
+            adViewHolder.getAdClose().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    items.remove(adViewHolder.getAdapterPosition());
+                    notifyItemRemoved(adViewHolder.getAdapterPosition());
+                }
+            });
         }
 
     }
@@ -104,17 +109,6 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     {
         this.itemClickListener = itemClickListener;
     }
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    public static class AdViewHolder extends RecyclerView.ViewHolder{
-
-        public AdViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////
-
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////

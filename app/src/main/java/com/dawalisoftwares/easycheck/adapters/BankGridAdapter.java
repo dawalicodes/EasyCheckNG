@@ -19,24 +19,33 @@ import com.dawalisoftwares.easycheck.interfaces.OnBankSelectedListener;
 import java.util.List;
 
 public class BankGridAdapter extends ArrayAdapter<Bank> {
+    private final int resource;
     private final OnBankSelectedListener bankSelectedListener;
     public BankGridAdapter(@NonNull Context context, int resource, @NonNull List<Bank> banks, OnBankSelectedListener bankSelectedListener) {
-        super(context, resource, banks);
+        super(context,resource,R.id.bank_name,banks);
         this.bankSelectedListener = bankSelectedListener;
+        this.resource = resource;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.bank_face,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(resource,parent,false);
         }
         LinearLayoutCompat bankFace = convertView.findViewById(R.id.bank_face_parent);
-        bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(getItem(position)));
+        if (bankSelectedListener != null) {
+            bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(getItem(position)));
+        }
         AppCompatImageView logo = convertView.findViewById(R.id.bank_logo);
         logo.setImageResource(getItem(position).getLogo());
         TextView name = convertView.findViewById(R.id.bank_name);
         name.setText(getItem(position).getName());
         return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+       return getView(position,convertView,parent);
     }
 }

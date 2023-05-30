@@ -3,7 +3,7 @@ package com.dawalisoftwares.easycheck.banks
 import com.dawalisoftwares.easycheck.R
 import com.dawalisoftwares.easycheck.interfaces.Bank
 
-class HeritageBank : Bank {
+class HeritageBank : Bank() {
     override fun getName(): String {
         return Bank.HERITAGE_BANK
     }

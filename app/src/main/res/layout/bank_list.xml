@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/spacing_large"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dip"
+    app:cardElevation="8dp"
+    android:clickable="false"
+    android:focusable="false"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:padding="@dimen/spacing_large"
+        android:background="?selectableItemBackground"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="horizontal"
+        android:id="@+id/bank_face_parent"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bank_logo"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            app:srcCompat="@drawable/logo_round" />
+        <TextView
+            android:layout_marginStart="@dimen/spacing_large"
+            android:id="@+id/bank_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/bank_name"
+            android:textStyle="italic" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

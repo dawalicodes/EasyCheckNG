@@ -11,25 +11,11 @@ public class Sim {
     private int simSlotIndex;
     private Network network;
     private final Context context;
+    private String networkName;
+    private int lightImage;
 
     @Nullable
     public Network getNetwork() {
-
-        switch (getMnc())
-        {
-            case "60":
-                setNetwork(new Mobile(getContext()));
-                break;
-            case "50":
-                setNetwork(new GLO(getContext()));
-                break;
-            case "30":
-                setNetwork(new MTN(getContext()));
-                break;
-            case "20":
-                setNetwork(new Airtel(getContext()));
-        }
-
         return this.network;
     }
 
@@ -78,5 +64,35 @@ public class Sim {
         this.mnc = mnc;
         this.mcc = mcc;
         this.simSlotIndex = simSlotIndex;
+        switch (mnc)
+        {
+            case "60":
+                setNetwork(new Mobile(context));
+                networkName = INFO.NETWORK_NAME_MOBILE;
+                lightImage = R.drawable.sim_mobile;
+                break;
+            case "50":
+                setNetwork(new GLO(context));
+                networkName = INFO.NETWORK_NAME_GLO;
+                lightImage = R.drawable.sim_glo;
+                break;
+            case "30":
+                setNetwork(new MTN(context));
+                networkName = INFO.NETWORK_NAME_MTN;
+                lightImage = R.drawable.sim_mtn;
+                break;
+            case "20":
+                setNetwork(new Airtel(context));
+                networkName = INFO.NETWORK_NAME_AIRTEL;
+                lightImage = R.drawable.sim_airtel;
+                break;
+        }
+    }
+
+    public String getNetworkStaticName() {
+        return networkName;
+    }
+    public int getLightImage(){
+        return lightImage;
     }
 }

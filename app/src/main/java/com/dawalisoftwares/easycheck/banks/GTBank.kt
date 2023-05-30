@@ -3,7 +3,7 @@ package com.dawalisoftwares.easycheck.banks
 import com.dawalisoftwares.easycheck.R
 import com.dawalisoftwares.easycheck.interfaces.Bank
 
-class GTBank : Bank {
+class GTBank : Bank() {
     override fun getName(): String {
         return Bank.GT_BANK
     }

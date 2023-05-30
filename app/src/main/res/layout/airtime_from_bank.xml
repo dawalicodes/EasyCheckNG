@@ -5,74 +5,31 @@
     android:layout_height="wrap_content"
     android:padding="4.0dip">
 
-    <LinearLayout
-        android:id="@+id/contact_bg"
-        android:layout_width="0.0dip"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4.0dip"
-        android:background="@color/light_green_400"
-        android:minHeight="120.0dip"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/bank_image"
-                android:layout_width="50.0dip"
-                android:layout_height="50.0dip"
-                android:layout_marginHorizontal="4.0dip"
-                android:layout_marginLeft="4.0dip"
-                android:layout_marginRight="4.0dip"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/for_another"
-                app:srcCompat="@drawable/ic_account_balance" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@id/bank_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4.0dip"
-                android:text="@string/bank"
-                android:textColor="@color/white"
-                app:layout_constraintLeft_toRightOf="@id/bank_image"
-                app:layout_constraintTop_toTopOf="@id/bank_image" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/for_another"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8.0dip"
-                android:layout_marginLeft="8.0dip"
-                android:layout_marginRight="8.0dip"
-                android:minHeight="48.0dip"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/for_another"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@id/for_another"
-                app:layout_constraintRight_toLeftOf="@id/for_another"
-                app:layout_constraintTop_toTopOf="@id/for_another" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@id/contact_bg_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4.0dip"
         android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_bg">
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4.0dip"
+            android:theme="@style/Theme.Material3.DayNight"
+            app:endIconMode="none">
+            <Spinner
+                android:id="@+id/bank_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48.0dip"
+                android:spinnerMode="dropdown"
+                android:theme="@style/USSDTheme" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recharge_phone_layout"
@@ -84,53 +41,35 @@
             android:layout_marginBottom="4.0dip"
             android:hint="@string/phone"
             android:theme="@style/Theme.Material3.DayNight"
-            android:visibility="gone"
             app:endIconDrawable="@drawable/ic_baseline_person_add_24"
             app:endIconMode="custom"
             app:endIconTint="@color/green_400"
-            app:startIconDrawable="@drawable/ic_baseline_dialpad_24"
-            app:startIconTint="@color/grey_60">
+            app:startIconDrawable="@drawable/ic_action_phone"
+            app:startIconTint="@color/green_400">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recharge_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="phone"
-                android:textColorHint="@color/grey_20"
-                android:visibility="gone" />
+                android:textColorHint="@color/grey_20" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4.0dip"
-            android:theme="@style/Theme.Material3.DayNight"
-            app:endIconMode="none">
-
-            <Spinner
-                android:id="@+id/bank_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48.0dip"
-                android:spinnerMode="dropdown"
-                android:theme="@style/USSDTheme" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4.0dip"
             android:hint="@string/amount"
             android:theme="@style/Theme.Material3.DayNight"
-            app:endIconMode="dropdown_menu">
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/amount_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_naira_24"
-                android:drawableTint="@color/light_green_500"
+                android:drawableTint="@color/green_400"
                 android:inputType="textAutoComplete" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>

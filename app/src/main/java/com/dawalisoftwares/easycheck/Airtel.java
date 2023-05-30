@@ -8,10 +8,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -132,7 +135,10 @@ public class Airtel implements Network {
 
     @Override
     public void loadAirtimeFromBank(Sim sim, Bundle bundle) {
-
+        if (bundle != null) {
+            placeCall(sim,Uri.fromParts("tel",bundle.getString(BankAirtimeReveal.Companion.getRECHARGE_KEY()),null));
+            Toast.makeText(context, bundle.getString(BankAirtimeReveal.Companion.getRECHARGE_KEY()), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
