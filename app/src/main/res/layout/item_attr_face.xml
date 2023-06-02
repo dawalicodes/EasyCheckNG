@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spacing_middle"
-    android:background="?selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="8dip"
+    app:cardElevation="10dip"
+    android:layout_margin="@dimen/spacing_large"
+    app:strokeWidth="0.5dip"
+    android:id="@+id/ussd_card"
+    app:strokeColor="@color/grey_10">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_code_parent"
         android:layout_width="match_parent"
+        android:padding="20dip"
+        android:background="?selectableItemBackground"
         android:layout_height="match_parent">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,12 +32,13 @@
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:textAppearance="@style/TextAppearance.AppCompat.Title"
+           android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
            android:text="*123#"
            android:id="@+id/item_code"
+           android:textColor="@color/grey_500"
+           android:textStyle="italic"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintRight_toRightOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

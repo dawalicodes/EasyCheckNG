@@ -12,10 +12,7 @@ import android.widget.RatingBar
 import androidx.recyclerview.widget.RecyclerView
 import com.dawalisoftwares.easycheck.INFO
 import com.dawalisoftwares.easycheck.R
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
@@ -103,6 +100,7 @@ class AdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 NativeAdOptions.Builder()
                     .build()
             ).build()
+
         if (isVpnConnected(itemView.context)) {
             adBody.visibility = View.VISIBLE
             adBody.text = "This app is available to residence of Nigeria only"

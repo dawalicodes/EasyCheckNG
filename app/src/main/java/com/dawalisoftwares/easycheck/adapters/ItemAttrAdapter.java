@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dawalisoftwares.easycheck.R;
@@ -30,6 +32,8 @@ public class ItemAttrAdapter extends RecyclerView.Adapter<Model> {
 
     @Override
     public void onBindViewHolder(@NonNull Model holder, int position) {
+        holder.name.setText(itemAttrs.get(position).name);
+        holder.code.setText(itemAttrs.get(position).code);
         holder.viewFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,9 +52,12 @@ public class ItemAttrAdapter extends RecyclerView.Adapter<Model> {
 
 class Model extends RecyclerView.ViewHolder {
 
-    View viewFace;
+    TextView name,code;
+    ConstraintLayout viewFace;
     public Model(@NonNull View itemView) {
         super(itemView);
-        viewFace = itemView;
+        viewFace = itemView.findViewById(R.id.item_code_parent);
+        name = itemView.findViewById(R.id.item_attr);
+        code = itemView.findViewById(R.id.item_code);
     }
 }

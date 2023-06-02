@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:text="@string/select_sim"
+        android:textColor="@color/grey_500"
+        android:layout_margin="@dimen/spacing_large" />
+    <ListView
+        android:layout_marginTop="@dimen/spacing_large"
+        android:id="@+id/recharge_select_sim_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</androidx.appcompat.widget.LinearLayoutCompat>

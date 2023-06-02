@@ -13,6 +13,6 @@ class PalmPay : Bank() {
     }
 
     override fun getLogo(): Int {
-        return R.drawable.glo
+        return R.drawable.palmpay
     }
 }

@@ -13,6 +13,6 @@ class Opay : Bank() {
     }
 
     override fun getLogo(): Int {
-        return R.drawable.airtel
+        return R.drawable.opay
     }
 }

@@ -29,7 +29,7 @@ public class AboutApp extends AppCompatActivity {
 
         privacy = findViewById(R.id.privacy_policy);
         privacy.setOnClickListener(view -> {
-            Uri webpage = Uri.parse("https://www.example.com");
+            Uri webpage = Uri.parse("https://www.termsgenerators.com/easy-check/");
             Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
@@ -56,7 +56,7 @@ public class AboutApp extends AppCompatActivity {
     }
 
     private void openFaceBook() {
-        Uri facebookUri = Uri.parse("https://www.facebook.com/yourpage");
+        Uri facebookUri = Uri.parse("https://www.facebook.com/dawalisoftware");
 
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW, facebookUri);
 

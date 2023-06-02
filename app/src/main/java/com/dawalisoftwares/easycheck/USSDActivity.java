@@ -173,7 +173,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         ussdRecycler.setHasFixedSize(false);
 
 
-        simCardManager = SimCardManager.getInstance(USSDActivity.this);
+        simCardManager = SimCardManager.getInstance(context);
 
         banks = Bank.Companion.getAllBanks();
 
@@ -261,7 +261,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
     }
 
     private void showPermissionRationale(String[] permissions, int code, String message) {
-        new MaterialAlertDialogBuilder(this).setMessage(message)
+        new MaterialAlertDialogBuilder(context,R.style.USSDTheme).setMessage(message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -367,9 +367,6 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
                 case INFO.BUY_DATA:
                     sim.getNetwork().buyData(sim, bundle);
                     break;
-                case INFO.LOAD_AIRTIME:
-                    sim.getNetwork().loadAirtime(sim, bundle);
-                    break;
                 case INFO.BORROW_AIRTIME:
                     sim.getNetwork().borrowAirtime(sim, bundle);
                     break;
@@ -408,7 +405,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
             }
 
         } else {
-            new MaterialAlertDialogBuilder(context).setMessage("This Sim card is not supported")
+            new MaterialAlertDialogBuilder(context,R.style.USSDTheme).setMessage("This Sim card is not supported")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

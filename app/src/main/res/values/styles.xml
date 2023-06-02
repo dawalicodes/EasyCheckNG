@@ -42,11 +42,19 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="dialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="windowMinWidthMajor">0dip</item>
+        <item name="windowMinWidthMinor">0dip</item>
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen" >
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
         <item name="postSplashScreenTheme">@style/Theme.EasyCheck</item>
+        <item name="iconSize">@dimen/spacing_xxlarge</item>
     </style>
 
      <style name="simOne" parent="Widget.MaterialComponents.Button">

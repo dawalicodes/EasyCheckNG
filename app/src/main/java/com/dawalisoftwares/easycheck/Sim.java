@@ -69,22 +69,22 @@ public class Sim {
             case "60":
                 setNetwork(new Mobile(context));
                 networkName = INFO.NETWORK_NAME_MOBILE;
-                lightImage = R.drawable.sim_mobile;
+                lightImage = R.drawable.mobile;
                 break;
             case "50":
                 setNetwork(new GLO(context));
                 networkName = INFO.NETWORK_NAME_GLO;
-                lightImage = R.drawable.sim_glo;
+                lightImage = R.drawable.glo;
                 break;
             case "30":
                 setNetwork(new MTN(context));
                 networkName = INFO.NETWORK_NAME_MTN;
-                lightImage = R.drawable.sim_mtn;
+                lightImage = R.drawable.mtn;
                 break;
             case "20":
                 setNetwork(new Airtel(context));
                 networkName = INFO.NETWORK_NAME_AIRTEL;
-                lightImage = R.drawable.sim_airtel;
+                lightImage = R.drawable.airtel;
                 break;
         }
     }
@@ -92,7 +92,7 @@ public class Sim {
     public String getNetworkStaticName() {
         return networkName;
     }
-    public int getLightImage(){
+    public int getSimImage(){
         return lightImage;
     }
 }

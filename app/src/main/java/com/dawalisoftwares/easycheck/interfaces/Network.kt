@@ -10,7 +10,7 @@ interface Network {
     fun checkPhoneNumber(sim: Sim?, bundle: Bundle?)
     fun checkTariffPlan(sim: Sim?, bundle: Bundle?)
     fun buyData(sim: Sim?, bundle: Bundle?)
-    fun loadAirtime(sim: Sim?, bundle: Bundle?)
+    fun loadAirtime(sim: Sim?, pin: String)
     fun borrowAirtime(sim: Sim?, bundle: Bundle?)
     fun borrowData(sim: Sim?, bundle: Bundle?)
     fun sendPleaseCallMe(sim: Sim?, bundle: Bundle?)

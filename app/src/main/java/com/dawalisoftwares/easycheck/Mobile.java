@@ -19,6 +19,8 @@ import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Mobile implements Network {
     private final Context context;
     TelecomManager telecomManager;
@@ -71,8 +73,8 @@ public class Mobile implements Network {
     }
 
     @Override
-    public void loadAirtime(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*311*PIN#",null);
+    public void loadAirtime(@org.jetbrains.annotations.Nullable Sim sim, @NotNull String pin) {
+        Uri uri = Uri.fromParts("tel", "*311*" + pin + "#",null);
         placeCall(sim,uri);
     }
 

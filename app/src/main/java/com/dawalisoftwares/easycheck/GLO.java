@@ -20,6 +20,8 @@ import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.jetbrains.annotations.NotNull;
+
 public class GLO implements Network {
     private final Context context;
     private final TelecomManager telecomManager;
@@ -70,8 +72,8 @@ public class GLO implements Network {
     }
 
     @Override
-    public void loadAirtime(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*311*PIN#",null);
+    public void loadAirtime(@org.jetbrains.annotations.Nullable Sim sim, @NotNull String pin) {
+        Uri uri = Uri.fromParts("tel", "*311*" + pin + "#",null);
         placeCall(sim,uri);
     }
 
@@ -100,7 +102,7 @@ public class GLO implements Network {
 
     @Override
     public void transferData(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*321#",null);
+        Uri uri = Uri.fromParts("tel", "*131#",null);
         placeCall(sim,uri);
     }
 

@@ -4,17 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <include
+        layout="@layout/ussd_activity_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include
-            layout="@layout/ussd_activity_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <!-- AppBarLayout -->
     <com.google.android.material.appbar.AppBarLayout
@@ -38,18 +32,18 @@
                 android:layout_marginTop="60dip"
                 app:layout_collapseMode="parallax">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/profile_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dip"
-                    android:layout_marginHorizontal="@dimen/spacing_xlarge"
-                    android:layout_marginVertical="@dimen/spacing_medium"
-                    app:cardBackgroundColor="@color/purple_700"
-                    app:cardCornerRadius="10dip"
-                    app:cardElevation="4dip"
-                    app:layout_constraintTop_toTopOf="parent">
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:id="@+id/profile_card"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="120dip"-->
+<!--                    android:layout_marginHorizontal="@dimen/spacing_xlarge"-->
+<!--                    android:layout_marginVertical="@dimen/spacing_medium"-->
+<!--                    app:cardBackgroundColor="@color/purple_700"-->
+<!--                    app:cardCornerRadius="10dip"-->
+<!--                    app:cardElevation="4dip"-->
+<!--                    app:layout_constraintTop_toTopOf="parent">-->
 
-                </com.google.android.material.card.MaterialCardView>
+<!--                </com.google.android.material.card.MaterialCardView>-->
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tools_text"
@@ -58,10 +52,11 @@
                     android:layout_marginTop="@dimen/spacing_large"
                     android:text="Tools"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                    android:textColor="@color/grey_800"
+                    android:textColor="@color/grey_600"
                     android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="@id/profile_card"
-                    app:layout_constraintTop_toBottomOf="@id/profile_card" />
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <GridView
                     android:id="@+id/tool_grid_view"
@@ -70,8 +65,8 @@
                     android:gravity="center"
                     android:numColumns="4"
                     android:stretchMode="columnWidth"
-                    app:layout_constraintLeft_toLeftOf="@id/profile_card"
-                    app:layout_constraintRight_toRightOf="@id/profile_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tools_text" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -95,12 +90,12 @@
                     android:background="@android:color/transparent">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/logo_holder"
                         android:layout_width="50dip"
                         android:layout_height="50dip"
-                        android:id="@+id/logo_holder"
-                        app:cardBackgroundColor="@android:color/white"
                         android:layout_margin="@dimen/spacing_small"
                         android:elevation="10dip"
+                        app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="8dip"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -112,19 +107,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="@dimen/spacing_small"
-                            android:src="@mipmap/ic_launcher_round"/>
+                            android:src="@mipmap/ic_launcher_round" />
                     </com.google.android.material.card.MaterialCardView>
+
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/logo_holder"
-                        app:layout_constraintBottom_toBottomOf="@id/logo_holder"
-                        app:layout_constraintLeft_toRightOf="@id/logo_holder"
                         android:layout_marginStart="@dimen/spacing_large"
                         android:text="@string/app_name"
-                        android:textSize="15sp"
                         android:textColor="@color/grey_600"
-                        android:textStyle="bold"/>
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/logo_holder"
+                        app:layout_constraintLeft_toRightOf="@id/logo_holder"
+                        app:layout_constraintTop_toTopOf="@id/logo_holder" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
