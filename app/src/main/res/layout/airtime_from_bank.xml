@@ -50,6 +50,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recharge_phone"
                 android:layout_width="match_parent"
+                android:textColor="@color/grey_700"
                 android:layout_height="match_parent"
                 android:inputType="phone"
                 android:textColorHint="@color/grey_20" />
@@ -68,9 +69,10 @@
                 android:id="@+id/amount_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/grey_700"
                 android:drawableStart="@drawable/ic_naira_24"
                 android:drawableTint="@color/green_400"
-                android:inputType="textAutoComplete" />
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -13,30 +13,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ussd_parent"
-        android:paddingVertical="@dimen/spacing_medium"
+        android:paddingVertical="@dimen/spacing_xmedium"
+        android:minHeight="75dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?selectableItemBackground">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/ussd_icon_card"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
-            android:layout_margin="@dimen/spacing_large"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="10dip"
-            app:cardElevation="6dip"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/ussd_icon"
-                android:layout_width="35dip"
-                android:layout_height="35dip"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher" />
-        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/ussd_name"
@@ -50,8 +32,8 @@
             android:textColor="@color/grey_700"
             android:textStyle="bold"
             app:layout_constraintRight_toLeftOf="@id/chip"
-            app:layout_constraintLeft_toRightOf="@id/ussd_icon_card"
-            app:layout_constraintTop_toTopOf="@id/ussd_icon_card" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/description"
@@ -63,7 +45,6 @@
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             android:textColor="@color/grey_400"
             android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="@id/ussd_icon_card"
             app:layout_constraintLeft_toLeftOf="@id/ussd_name"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintHorizontal_bias="0"

@@ -1,18 +1,13 @@
 package com.dawalisoftwares.easycheck;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telecom.TelecomManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 
 import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
@@ -23,11 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class MTN implements Network {
     private final Context context;
-    private final TelecomManager telecomManager;
 
     public MTN(Context context) {
         this.context = context;
-        telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
     }
 
     @Override
@@ -38,8 +31,7 @@ public class MTN implements Network {
 
     @Override
     public void checkDataBalance(Sim sim, Bundle bundle) {
-        Uri uri = Uri.fromParts("tel", "*323#",null);
-        placeCall(sim,uri);
+       checkAirtimeBalance(sim,bundle);
     }
 
     @Override
@@ -152,13 +144,7 @@ public class MTN implements Network {
 
     @Override
     public void placeCall(Sim sim, Uri uri) {
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE},INFO.READ_PHONE_STATE_CALL_PHONE_REQUEST);
-            return;
-        }
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE,telecomManager.getCallCapablePhoneAccounts().get(sim.getSimSlotIndex()));
-        telecomManager.placeCall(uri,bundle);
+        Network.DefaultImpls.placeCall(this, sim, uri);
     }
 
     //        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) {

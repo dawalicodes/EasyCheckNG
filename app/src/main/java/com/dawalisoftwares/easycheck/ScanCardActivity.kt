@@ -9,10 +9,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
@@ -36,6 +38,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.nio.ByteBuffer
+import java.util.concurrent.Executors
 
 
 @TransformExperimental
@@ -55,11 +58,16 @@ class ScanCardActivity : AppCompatActivity() {
     private var source: OutputTransform? = null
     private var lastPin = ""
     private var count = 0
+    private var isAnalyzing = true
+    private lateinit var preview: Preview
+    private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var context: Context
     private lateinit var sims: List<Sim>
     private lateinit var rotation: Animation
     private lateinit var blink: Animation
+    private lateinit var recharge: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_card)
@@ -68,10 +76,14 @@ class ScanCardActivity : AppCompatActivity() {
         preveiwView = findViewById(R.id.camera_preview)
         flash = findViewById(R.id.toggle_group)
         box = findViewById(R.id.image_box)
+        analyzetext = findViewById(R.id.analyze_text)
+        analyzeIdicator = findViewById(R.id.analyze_indicator)
         context = this@ScanCardActivity
+        recharge = findViewById(R.id.load)
         blink = AnimationUtils.loadAnimation(context,R.anim.blink)
         rotation = AnimationUtils.loadAnimation(context,R.anim.rotation)
         sims = SimCardManager.getInstance(context).activeSimCards
+
 //        preveiwView.implementationMode = PreviewView.ImplementationMode.COMPATIBLE
         imageAnalysis =
             ImageAnalysis.Builder().setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST)
@@ -104,10 +116,12 @@ class ScanCardActivity : AppCompatActivity() {
                         }
                         lastPin = pin
                         if (count >= 3) {
-                            cameraProvider.unbind(imageAnalysis)
+                            cameraProvider.unbindAll()
+                            dismissAnalyze()
                             rechargeNow(pin)
                         }
                     }else {
+                        isAnalyzing = false
                         dismissAnalyze()
                     }
                 }.addOnCompleteListener { imageProxy.close() }
@@ -118,7 +132,28 @@ class ScanCardActivity : AppCompatActivity() {
 
         capture = ImageCapture.Builder().setFlashMode(FLASH_MODE_AUTO).build()
 
+        recharge.setOnClickListener {
+            showAnalyze()
+            capture.takePicture(Executors.newSingleThreadExecutor(),object : ImageCapture.OnImageCapturedCallback() {
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    super.onCaptureSuccess(image)
+                    dismissAnalyze()
+                    if (image.image != null) {
+                        val inputImage: InputImage =
+                            InputImage.fromMediaImage(image.image!!,image.imageInfo.rotationDegrees)
+                        recognizer.process(inputImage).addOnSuccessListener { text ->
+                            val pin: String? = getPin(text.textBlocks)
+                            if (!pin.isNullOrBlank()){
+                                rechargeNow(pin)
+                            }else {
+                                Toast.makeText(context,"Failed to detect pin",Toast.LENGTH_SHORT).show()
+                            }
+                        }.addOnCompleteListener { image.close() }
+                    }
 
+                }
+            })
+        }
         cameraProviderFuture.addListener(Runnable {
             cameraProvider = cameraProviderFuture.get()
             bindPreview(cameraProvider)
@@ -133,8 +168,8 @@ class ScanCardActivity : AppCompatActivity() {
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
-        var preview: Preview = Preview.Builder().build()
-        var cameraSelector: CameraSelector =
+        preview = Preview.Builder().build()
+        cameraSelector =
             CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
         preview.setSurfaceProvider(preveiwView.surfaceProvider)
         camera = cameraProvider.bindToLifecycle(
@@ -219,11 +254,12 @@ class ScanCardActivity : AppCompatActivity() {
     }
 
     private fun rechargeNow(pin: String) {
+        dismissAnalyze()
         val view: View = layoutInflater.inflate(R.layout.recharge_select_sim,LinearLayout(context),false)
         val listView: ListView = view.findViewById(R.id.recharge_select_sim_list_view);
         val adapter = RechargeCardSelectSimAdapter(context,R.layout.recharge_select_sim_face,sims)
         listView.adapter = adapter
-        val dialog =  MaterialAlertDialogBuilder(context,R.style.USSDTheme).create()
+        val dialog =  MaterialAlertDialogBuilder(context,R.style.Theme_EasyCheck).create()
         listView.setOnItemClickListener { adapterView, _, position, _ ->
            val sim: Sim = adapterView.getItemAtPosition(position) as Sim
             if (sim.network != null) {
@@ -242,9 +278,13 @@ class ScanCardActivity : AppCompatActivity() {
         }
         dialog.setView(view)
         dialog.show()
+        dialog.setOnCancelListener {
+            dismissAnalyze()
+            bindPreview(cameraProvider) }
     }
 
     private fun showAnalyze() {
+        isAnalyzing = true
         analyzeIdicator.visibility = View.VISIBLE
         analyzetext.visibility = View.VISIBLE
         box.setColorFilter(resources.getColor(R.color.green_400,theme))
@@ -253,11 +293,12 @@ class ScanCardActivity : AppCompatActivity() {
     }
 
     private fun dismissAnalyze() {
-        analyzeIdicator.animation.cancel()
-        analyzetext.animation.cancel()
+        isAnalyzing = false
+        analyzeIdicator.animation?.cancel()
+        analyzetext.animation?.cancel()
         analyzeIdicator.visibility = View.GONE
         analyzetext.visibility = View.GONE
-        box.setColorFilter(Color.TRANSPARENT)
+        box.setColorFilter(Color.WHITE)
 
     }
 }

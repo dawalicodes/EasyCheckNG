@@ -1,10 +1,8 @@
 package com.dawalisoftwares.easycheck.adapters;
 
-import android.net.ipsec.ike.IkeIpv4AddrIdentification;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,7 +52,6 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Item item = (Item) items.get(ussdViewHolder.getAdapterPosition());
             TooltipCompat.setTooltipText(ussdViewHolder.constraintLayout,item.getDescription());
             ussdViewHolder.ussdName.setText(item.getName());
-            ussdViewHolder.ussdIcon.setImageResource(item.getIcon());
             ussdViewHolder.description.setText(item.getDescription());
             if (item.getName().equals(INFO.CHECK_NIN)) {
                 ussdViewHolder.chip.setVisibility(View.VISIBLE);
@@ -114,18 +111,16 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ////////////////////////////////////////////////////////////////////////////////////////////
     public static class UssdViewHolder extends RecyclerView.ViewHolder{
 
-        private final ImageView ussdIcon;
         private final MaterialCardView cardView;
         private final TextView ussdName;
         private final MaterialTextView description;
         private final Chip chip;
-        private ConstraintLayout constraintLayout;
+        private final ConstraintLayout constraintLayout;
 
         public UssdViewHolder(@NonNull View itemView) {
             super(itemView);
             chip = itemView.findViewById(R.id.chip);
             description = itemView.findViewById(R.id.description);
-            ussdIcon = itemView.findViewById(R.id.ussd_icon);
             constraintLayout = itemView.findViewById(R.id.ussd_parent);
             ussdName = itemView.findViewById(R.id.ussd_name);
             cardView = itemView.findViewById(R.id.ussd_card);
