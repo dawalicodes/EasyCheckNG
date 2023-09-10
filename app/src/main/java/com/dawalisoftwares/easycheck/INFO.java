@@ -1,7 +1,9 @@
 package com.dawalisoftwares.easycheck;
 
 public class INFO {
-   public static final int VIEW_TYPE_AD = 1;
+    public static final int VIEW_TYPE_AD = 1;
+    public static final int CURSOR_ID_DISPLAY_NAME = 45;
+    public static final int CURSOR_ID_PHONE_NUMBER = 46;
     public static final int VIEW_TYPE_USSD = 2;
     public static final int VIEW_TYPE_ACTION = 55;
     public static final int NETWORK_AIRTEL = 0;
@@ -10,6 +12,7 @@ public class INFO {
     public static final int NETWORK_GLO = 3;
     public static final int CAMERA_REQUEST_CODE = 89;
     public static final String CHECK_AIRTIME_BALANCE = "Check Airtime Balance";
+    public static final String TABLE_NAME_BEE_PERSON = "BEE_PERSON";
     public static final String CHECK_DATA_BALANCE = "Check Data Balance";
     public static final String CHECK_PHONE_NUMBER = "Check Phone Number";
     public static final String PRIVATE_NUMBER = "Private Number";

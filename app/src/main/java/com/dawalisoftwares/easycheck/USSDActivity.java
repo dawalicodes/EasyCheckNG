@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -38,24 +37,6 @@ import com.dawalisoftwares.easycheck.adapters.Tool;
 import com.dawalisoftwares.easycheck.adapters.ToolsAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDItemDecorator;
-import com.dawalisoftwares.easycheck.banks.AccessBank;
-import com.dawalisoftwares.easycheck.banks.ECOBank;
-import com.dawalisoftwares.easycheck.banks.FCMB;
-import com.dawalisoftwares.easycheck.banks.FidelityBank;
-import com.dawalisoftwares.easycheck.banks.FirstBank;
-import com.dawalisoftwares.easycheck.banks.GTBank;
-import com.dawalisoftwares.easycheck.banks.HeritageBank;
-import com.dawalisoftwares.easycheck.banks.KeyStoneBank;
-import com.dawalisoftwares.easycheck.banks.Opay;
-import com.dawalisoftwares.easycheck.banks.PalmPay;
-import com.dawalisoftwares.easycheck.banks.PolarisBank;
-import com.dawalisoftwares.easycheck.banks.StanbicBank;
-import com.dawalisoftwares.easycheck.banks.SterlingBank;
-import com.dawalisoftwares.easycheck.banks.UBA;
-import com.dawalisoftwares.easycheck.banks.UnionBank;
-import com.dawalisoftwares.easycheck.banks.UnityBank;
-import com.dawalisoftwares.easycheck.banks.WemaBank;
-import com.dawalisoftwares.easycheck.banks.ZenithBank;
 import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.BankServiceBottomSheet;
 import com.dawalisoftwares.easycheck.fragments.NetworkLookUpReveal;
@@ -72,7 +53,6 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,9 +71,9 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
     private USSDViewModel viewModel;
     private List<Bank> banks;
 
-    ActivityResultLauncher<Void> pickContact = registerForActivityResult(new ActivityResultContracts.PickContact(), new ActivityResultCallback<Uri>() {
-        @Override
-        public void onActivityResult(Uri result) {
+    ActivityResultLauncher<Void> pickContact = registerForActivityResult(new ActivityResultContracts.PickContact(), result -> {
+        {
+
             if (result != null) {
                 ContentResolver contentResolver = getContentResolver();
                 Cursor cursor = contentResolver.query(result, null, null, null, null);
