@@ -16,6 +16,7 @@ import androidx.camera.view.TransformExperimental
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dawalisoftwares.easycheck.*
+import com.dawalisoftwares.easycheck.databinding.ItemQuickActionsBinding
 
 @TransformExperimental
 class QuickActionAdapter(val mContext: Context, tool: MutableList<Action>) :
@@ -23,17 +24,14 @@ class QuickActionAdapter(val mContext: Context, tool: MutableList<Action>) :
     private lateinit var view: View
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//        val binding = ItemQuickActionsBinding .inflate(LayoutInflater.from(mContext), parent, false)
-//        val rootView = binding.root
-//        rootView.tag = binding
         if (convertView != null) {
             view = convertView.rootView
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_quick_actions, parent, false)
-            val image: ImageView = view.findViewById(R.id.action_icon)
-            val title: TextView = view.findViewById(R.id.action_title)
-            image.setImageResource(getItem(position)?.icon ?: R.drawable.baseline_account_balance_wallet_24)
-            title.text = getItem(position)?.name ?: ""
+            val binding = ItemQuickActionsBinding.inflate(LayoutInflater.from(mContext), parent, false)
+            view = binding.root
+            view.tag = binding
+            binding.actionIcon.setImageResource(getItem(position)?.icon ?: R.drawable.baseline_account_balance_wallet_24)
+            binding.actionTitle.text = getItem(position)?.name ?: ""
             TooltipCompat.setTooltipText(view, getItem(position)?.desc ?: "")
             view.setOnClickListener {
                 when (getItem(position)?.name) {
