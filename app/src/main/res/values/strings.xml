@@ -132,4 +132,6 @@ Easy Check 1.2 Bug fixes"</string>
     <string name="glo_check_number_tip">First select \"My tariff plan\" then select \"My number\"</string>
     <string name="contact_permission">Easy Check requires access to your contacts list. This is necessary for the app to perform its intended functions. Be rest assured that Easy Check takes your privacy and security seriously and will only use this information for the purpose of providing you with a better app experience</string>
     <string name="advertisement">Advertisement</string>
+    <string name="check_remaining_airtime">Check remaining airtime</string>
+    <string name="airtime_balance">Airtime Balance</string>
 </resources>

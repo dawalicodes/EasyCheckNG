@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.TooltipCompat
 import androidx.camera.view.TransformExperimental
 import androidx.core.app.ActivityCompat
@@ -19,22 +18,25 @@ import androidx.core.content.ContextCompat
 import com.dawalisoftwares.easycheck.*
 
 @TransformExperimental
-class ToolsAdapter(val mContext: Context, tool: MutableList<Tool>) :
-    ArrayAdapter<Tool>(mContext, R.layout.tool_face, tool) {
+class QuickActionAdapter(val mContext: Context, tool: MutableList<Action>) :
+    ArrayAdapter<Action>(mContext, R.layout.item_quick_actions, tool) {
     private lateinit var view: View
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+//        val binding = ItemQuickActionsBinding .inflate(LayoutInflater.from(mContext), parent, false)
+//        val rootView = binding.root
+//        rootView.tag = binding
         if (convertView != null) {
             view = convertView.rootView
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.tool_face, parent, false)
-            val image: ImageView = view.findViewById(R.id.tool_image)
-            val title: TextView = view.findViewById(R.id.tools_text)
-            image.setImageResource(getItem(position)?.icon ?: R.drawable.stanbic_bank)
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_quick_actions, parent, false)
+            val image: ImageView = view.findViewById(R.id.action_icon)
+            val title: TextView = view.findViewById(R.id.action_title)
+            image.setImageResource(getItem(position)?.icon ?: R.drawable.baseline_account_balance_wallet_24)
             title.text = getItem(position)?.name ?: ""
             TooltipCompat.setTooltipText(view, getItem(position)?.desc ?: "")
             view.setOnClickListener {
                 when (getItem(position)?.name) {
-                    INFO.BEE -> context.startActivity(Intent(context,Bee::class.java))
                     INFO.USSD_CODES -> context.startActivity(Intent(context, USSDCodes::class.java))
                     INFO.SCAN_CARD -> {
                         if (ContextCompat.checkSelfPermission(
@@ -57,6 +59,6 @@ class ToolsAdapter(val mContext: Context, tool: MutableList<Tool>) :
     }
 }
 
-data class Tool(val name: String, val icon: Int, val desc: String) {
+data class Action(val name: String, val icon: Int, val desc: String) {
 
 }

@@ -33,8 +33,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dawalisoftwares.easycheck.adapters.Tool;
-import com.dawalisoftwares.easycheck.adapters.ToolsAdapter;
+import com.dawalisoftwares.easycheck.adapters.Action;
+import com.dawalisoftwares.easycheck.adapters.QuickActionAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDItemDecorator;
 import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
@@ -122,16 +122,16 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         GridView toolGridview = findViewById(R.id.tool_grid_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ToolsAdapter toolsAdapter = new ToolsAdapter(context, List.of(
-                new Tool(INFO.BEE, R.drawable.bee_two, "No one can call your line, except the ones you select."),
-                new Tool(INFO.USSD_CODES, R.drawable.hash, "View and dial other ussd codes."),
-                new Tool(INFO.SCAN_CARD, R.drawable.scan_card, "Load recharge card by scanning the card."),
-                new Tool(INFO.ABOUT, R.drawable.about, "Stay up to date, and get more apps from Dsoftware.")
+        QuickActionAdapter toolsAdapter = new QuickActionAdapter(context, List.of(
+                new Action(INFO.BEE, R.drawable.bee_two, "No one can call your line, except the ones you select."),
+                new Action(INFO.USSD_CODES, R.drawable.hash, "View and dial other ussd codes."),
+                new Action(INFO.SCAN_CARD, R.drawable.scan_card, "Load recharge card by scanning the card."),
+                new Action(INFO.ABOUT, R.drawable.about, "Stay up to date, and get more apps from Dsoftware.")
         ));
         toolGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Tool tool = (Tool) adapterView.getItemAtPosition(i);
+                Action tool = (Action) adapterView.getItemAtPosition(i);
 
             }
         });
