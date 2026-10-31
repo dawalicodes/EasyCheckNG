@@ -45,8 +45,7 @@
             android:exported="false" />
         <activity
             android:name=".AboutApp"
-            android:exported="false"
-            android:parentActivityName=".USSDActivity" />
+            android:exported="false" />
         <activity
             android:name=".USSDActivity"
             android:exported="true"

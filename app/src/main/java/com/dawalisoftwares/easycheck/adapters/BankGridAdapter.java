@@ -17,6 +17,7 @@ import com.dawalisoftwares.easycheck.interfaces.Bank;
 import com.dawalisoftwares.easycheck.interfaces.OnBankSelectedListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BankGridAdapter extends ArrayAdapter<Bank> {
     private final int resource;
@@ -35,12 +36,12 @@ public class BankGridAdapter extends ArrayAdapter<Bank> {
         }
         LinearLayoutCompat bankFace = convertView.findViewById(R.id.bank_face_parent);
         if (bankSelectedListener != null) {
-            bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(getItem(position)));
+            bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(Objects.requireNonNull(getItem(position))));
         }
         AppCompatImageView logo = convertView.findViewById(R.id.bank_logo);
-        logo.setImageResource(getItem(position).getLogo());
+        logo.setImageResource(Objects.requireNonNull(getItem(position)).getLogo());
         TextView name = convertView.findViewById(R.id.bank_name);
-        name.setText(getItem(position).getName());
+        name.setText(Objects.requireNonNull(getItem(position)).getName());
         return convertView;
     }
 

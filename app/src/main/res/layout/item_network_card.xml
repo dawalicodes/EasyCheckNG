@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/network_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#FFF9E7"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- Network icon -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/network_icon_holder"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:cardBackgroundColor="#FFD43B"
+            app:cardCornerRadius="19dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/network_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="9dp"
+                android:src="@drawable/ic_network"
+                android:scaleType="fitCenter"
+                android:contentDescription="Network" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Network name -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/network_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="MTN"
+            android:textColor="#17172B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
+            app:layout_constraintEnd_toStartOf="@id/network_arrow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Phone number -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/network_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="1dp"
+            android:text="0803 ••• ••••"
+            android:textColor="#686878"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
+            app:layout_constraintEnd_toStartOf="@id/network_arrow"
+            app:layout_constraintTop_toBottomOf="@id/network_name" />
+
+        <!-- Connected status -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/network_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:text="● Connected"
+            android:textColor="#16A34A"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
+            app:layout_constraintTop_toBottomOf="@id/network_number"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Arrow -->
+        <ImageView
+            android:id="@+id/network_arrow"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_chevron_right"
+            android:scaleType="fitCenter"
+            android:contentDescription="Open"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

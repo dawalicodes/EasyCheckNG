@@ -134,4 +134,6 @@ Easy Check 1.2 Bug fixes"</string>
     <string name="advertisement">Advertisement</string>
     <string name="check_remaining_airtime">Check remaining airtime</string>
     <string name="airtime_balance">Airtime Balance</string>
+    <string name="check_your_remaining_airtime">Check your remaining airtime</string>
+    <string name="easy_check">Easy Check</string>
 </resources>

@@ -14,7 +14,6 @@ import android.telecom.TelecomManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.camera.view.TransformExperimental;
 import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
@@ -120,24 +118,31 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         viewModel = new ViewModelProvider(this).get(USSDViewModel.class);
         ussdRecycler = findViewById(R.id.ussd_recycler_view);
         GridView toolGridview = findViewById(R.id.tool_grid_view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        QuickActionAdapter toolsAdapter = new QuickActionAdapter(context, List.of(
-                new Action(INFO.BEE, R.drawable.bee_two, "No one can call your line, except the ones you select."),
-                new Action(INFO.USSD_CODES, R.drawable.hash, "View and dial other ussd codes."),
-                new Action(INFO.SCAN_CARD, R.drawable.scan_card, "Load recharge card by scanning the card."),
-                new Action(INFO.ABOUT, R.drawable.about, "Stay up to date, and get more apps from Dsoftware.")
-        ));
-        toolGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Action tool = (Action) adapterView.getItemAtPosition(i);
 
-            }
-        });
+        QuickActionAdapter toolsAdapter = new QuickActionAdapter(context, List.of(
+                new Action(
+                        INFO.CHECK_AIRTIME_BALANCE,
+                        R.drawable.baseline_account_balance_wallet_24,
+                        "Check your airtime balance"
+                ),
+                new Action(
+                        INFO.CHECK_DATA_BALANCE,
+                        R.drawable.baseline_wifi_24,
+                        "Check your remaining data"
+                ),
+                new Action(
+                        INFO.CHECK_PHONE_NUMBER,
+                        R.drawable.baseline_local_phone_24,
+                        "Check your phone number"
+                ),
+                new Action(
+                        INFO.CHECK_TARIFF_PLAN,
+                        R.drawable.ic_baseline_star_half_24,
+                        "Check your current tariff plan"
+                )
+        ));
 
         toolGridview.setAdapter(toolsAdapter);
-
         ussdLayoutManager = new LinearLayoutManager(context) {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
@@ -292,7 +297,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         items.add(position, reveal);
         adapter.notifyItemInserted(position);
         MaterialCardView cardView = (MaterialCardView) view;
-        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.ROUNDED, 0).setBottomLeftCorner(CornerFamily.ROUNDED, 0).build();
+        ShapeAppearanceModel cardAppearance = new ShapeAppearanceModel.Builder(cardView.getShapeAppearanceModel()).setBottomRightCorner(CornerFamily.CUT, 0).setBottomLeftCorner(CornerFamily.CUT, 0).build();
         cardView.setShapeAppearanceModel(cardAppearance);
 
         if (ussdLayoutManager.findLastCompletelyVisibleItemPosition() < position) {

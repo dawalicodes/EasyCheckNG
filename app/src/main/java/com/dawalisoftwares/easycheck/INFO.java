@@ -8,6 +8,10 @@ public class INFO {
     public static final int VIEW_TYPE_ACTION = 55;
     public static final int NETWORK_AIRTEL = 0;
     public static final int NETWORK_MTN = 1;
+    public static final String NETWORK_MNC_AIRTEL = "20";
+    public static final String NETWORK_MNC_MTN = "30";
+    public static final String NETWORK_MNC_GLO = "50";
+    public static final String NETWORK_MNC_MOBILE = "60";
     public static final int NETWORK_MOBILE = 2;
     public static final int NETWORK_GLO = 3;
     public static final int CAMERA_REQUEST_CODE = 89;

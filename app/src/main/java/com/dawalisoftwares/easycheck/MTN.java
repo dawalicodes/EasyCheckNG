@@ -13,7 +13,6 @@ import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.PrivateNumberReveal;
 import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import org.jetbrains.annotations.NotNull;
 
 public class MTN implements Network {

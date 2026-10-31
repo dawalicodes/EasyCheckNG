@@ -3,22 +3,20 @@ package com.dawalisoftwares.easycheck.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.TooltipCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dawalisoftwares.easycheck.AD;
 import com.dawalisoftwares.easycheck.INFO;
 import com.dawalisoftwares.easycheck.Item;
 import com.dawalisoftwares.easycheck.R;
+import com.dawalisoftwares.easycheck.databinding.ItemMoreServiceBinding;
 import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
 import com.dawalisoftwares.easycheck.interfaces.ItemClickListener;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.textview.MaterialTextView;
+import com.dawalisoftwares.easycheck.databinding.AdFaceBinding;
+import com.dawalisoftwares.easycheck.databinding.ActionViewFaceBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,52 +32,46 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == INFO.VIEW_TYPE_AD) {
-            return new AdViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ad_face, parent, false));
-        }else if (viewType == INFO.VIEW_TYPE_USSD) {
-            return new UssdViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ussd_face,parent,false));
-        }
-        else {
-            View aView = LayoutInflater.from(parent.getContext()).inflate(R.layout.action_view_face,parent,false);
-            return new ActionViewHolder(aView);
+            AdFaceBinding binding = AdFaceBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new AdViewHolder(binding);
+        } else if (viewType == INFO.VIEW_TYPE_USSD) {
+            ItemMoreServiceBinding binding = ItemMoreServiceBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new UssdViewHolder(binding);
+        } else {
+            ActionViewFaceBinding binding = ActionViewFaceBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ActionViewHolder(binding);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == INFO.VIEW_TYPE_USSD)
+        if (getItemViewType(holder.getAdapterPosition()) == INFO.VIEW_TYPE_USSD)
         {
             UssdViewHolder ussdViewHolder = (UssdViewHolder) holder;
             Item item = (Item) items.get(ussdViewHolder.getAdapterPosition());
-            TooltipCompat.setTooltipText(ussdViewHolder.constraintLayout,item.getDescription());
-            ussdViewHolder.ussdName.setText(item.getName());
-            ussdViewHolder.description.setText(item.getDescription());
+            TooltipCompat.setTooltipText(ussdViewHolder.binding.serviceHolder, item.getDescription());
+            ussdViewHolder.binding.serviceTitle.setText(item.getName());
+            ussdViewHolder.binding.serviceDescription.setText(item.getDescription());
             if (item.getName().equals(INFO.CHECK_NIN)) {
-                ussdViewHolder.chip.setVisibility(View.VISIBLE);
-                ussdViewHolder.chip.setText("Charges Apply");
+                ussdViewHolder.binding.serviceBadge.setVisibility(View.VISIBLE);
+                ussdViewHolder.binding.serviceBadge.setText(R.string.charges_apply);
             }else {
-                ussdViewHolder.chip.setVisibility(View.GONE);
+                ussdViewHolder.binding.serviceBadge.setVisibility(View.GONE);
             }
-            ussdViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListener.onItemClickListener(ussdViewHolder.cardView, item.getName(),item.getDescription(),ussdViewHolder.getAdapterPosition());
-                }
-            });
+            ussdViewHolder.binding.serviceHolder.setOnClickListener(view -> itemClickListener.onItemClickListener(ussdViewHolder.binding.serviceHolder, item.getName(),item.getDescription(),ussdViewHolder.getAdapterPosition()));
 
 
-        }else if (getItemViewType(position) == INFO.VIEW_TYPE_ACTION){
+        }else if (getItemViewType(holder.getAdapterPosition()) == INFO.VIEW_TYPE_ACTION){
             ActionViewHolder actionViewHolder = (ActionViewHolder) holder;
             EasyReveal reveal = (EasyReveal) items.get(actionViewHolder.getAdapterPosition());
-            actionViewHolder.actionContainer.removeAllViews();
-            reveal.addToView(actionViewHolder.actionContainer);
-        }else if (getItemViewType(position) == INFO.VIEW_TYPE_AD) {
+            actionViewHolder.binding.simCardCard.removeAllViews();
+            reveal.addToView(actionViewHolder.binding.simCardCard);
+        }else if (getItemViewType(holder.getAdapterPosition()) == INFO.VIEW_TYPE_AD) {
             AdViewHolder adViewHolder = (AdViewHolder) holder;
-            adViewHolder.getAdClose().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    items.remove(adViewHolder.getAdapterPosition());
-                    notifyItemRemoved(adViewHolder.getAdapterPosition());
-                }
+            adViewHolder.binding.adClose.setOnClickListener(view -> {
+                int pos = adViewHolder.getAdapterPosition();
+                items.remove(pos);
+                notifyItemRemoved(pos);
             });
         }
 
@@ -109,23 +101,28 @@ public class USSDAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////
-    public static class UssdViewHolder extends RecyclerView.ViewHolder{
-
-        private final MaterialCardView cardView;
-        private final TextView ussdName;
-        private final MaterialTextView description;
-        private final Chip chip;
-        private final ConstraintLayout constraintLayout;
-
-        public UssdViewHolder(@NonNull View itemView) {
-            super(itemView);
-            chip = itemView.findViewById(R.id.chip);
-            description = itemView.findViewById(R.id.description);
-            constraintLayout = itemView.findViewById(R.id.ussd_parent);
-            ussdName = itemView.findViewById(R.id.ussd_name);
-            cardView = itemView.findViewById(R.id.ussd_card);
+    public static class UssdViewHolder extends RecyclerView.ViewHolder {
+        final ItemMoreServiceBinding binding;
+        public UssdViewHolder(@NonNull ItemMoreServiceBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
+    }
 
+    public static class AdViewHolder extends RecyclerView.ViewHolder {
+        final AdFaceBinding binding;
+        public AdViewHolder(@NonNull AdFaceBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+
+    public static class ActionViewHolder extends RecyclerView.ViewHolder {
+        final ActionViewFaceBinding binding;
+        public ActionViewHolder(@NonNull ActionViewFaceBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

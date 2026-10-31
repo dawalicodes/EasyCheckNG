@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/service_holder"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <!-- Colored icon background -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/service_icon_holder"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardBackgroundColor="#EAE5FF"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/service_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="11dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_network"
+                app:tint="#6338E8" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Service title -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/service_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Network Lookup"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:textColor="#171936"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/service_icon_holder"
+            app:layout_constraintEnd_toStartOf="@id/service_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/service_description"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <!-- Optional badge -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/service_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_service_badge"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:text="Charges apply"
+            android:textColor="#E69A00"
+            android:textSize="9sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/service_title"
+            app:layout_constraintTop_toTopOf="@id/service_title"
+            app:layout_constraintBottom_toBottomOf="@id/service_title" />
+
+        <!-- Description -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/service_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Check a phone number network"
+            android:textColor="#737A99"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@id/service_icon_holder"
+            app:layout_constraintEnd_toStartOf="@id/service_arrow"
+            app:layout_constraintTop_toBottomOf="@id/service_title"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Chevron -->
+        <ImageView
+            android:id="@+id/service_arrow"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_chevron_right"
+            android:scaleType="fitCenter"
+            android:contentDescription="Open service"
+            app:tint="#7783AD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

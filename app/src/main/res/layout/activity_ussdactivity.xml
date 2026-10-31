@@ -1,263 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F7FA">
 
-    <!-- Main scrolling content -->
-    <include
-        layout="@layout/ussd_activity_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <!-- Header -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:elevation="0dp">
+        android:background="#F7F7FA"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="#F7F7FA"
+            app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:scrimAnimationDuration="200"
-            app:statusBarScrim="@android:color/transparent">
+            app:titleEnabled="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="72dp"
-                android:paddingBottom="20dp"
-                app:layout_collapseMode="parallax">
-
-                <!-- App title -->
+                app:layout_collapseMode="none"
+                android:orientation="vertical">
+                <!-- Expanded purple header -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="150dp"
+                    android:background="@drawable/bg_header_gradient"
+                    android:paddingStart="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/app_title"
+                    <ImageView
+                        android:id="@+id/header_logo"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_header_logo"
+                        android:contentDescription="@string/easy_check"
+                        android:padding="9dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_bolt_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#FFFFFF" />
+
+                    <LinearLayout
+                        android:id="@+id/header_title_group"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Easy Check"
-                        android:textColor="#17172B"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/app_subtitle"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@id/header_logo"
                         app:layout_constraintEnd_toStartOf="@id/settings_button"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@id/header_logo"
+                        app:layout_constraintTop_toTopOf="@id/header_logo">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/app_subtitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Your everyday USSD assistant"
-                        android:textColor="#77778A"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/settings_button"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/app_title" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Easy "
+                                android:textColor="#FFFFFF"
+                                android:textSize="27sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Check"
+                                android:textColor="#FFD43B"
+                                android:textSize="27sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/app_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Your everyday USSD assistant"
+                            android:textColor="#F0ECFF"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/settings_button"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        app:cardBackgroundColor="@android:color/white"
-                        app:cardCornerRadius="23dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="#4934D8"
+                        app:cardCornerRadius="20dp"
                         app:cardElevation="0dp"
-                        app:strokeColor="#E9E9F0"
-                        app:strokeWidth="1dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/header_logo"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="@id/header_logo">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="12dp"
+                            android:contentDescription="Settings"
+                            android:padding="10dp"
                             android:src="@drawable/ic_settings"
-                            android:contentDescription="Settings" />
+                            app:tint="#FFFFFF" />
 
                     </com.google.android.material.card.MaterialCardView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <!-- Network / SIM card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/network_card"
+                <!-- Network card -->
+                <include
+                    layout="@layout/item_network_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    app:cardBackgroundColor="#FFF9E7"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="0dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="92dp"
-                        android:padding="16dp">
-
-                        <!-- Network icon -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/network_icon_holder"
-                            android:layout_width="58dp"
-                            android:layout_height="58dp"
-                            app:cardBackgroundColor="#FFD43B"
-                            app:cardCornerRadius="29dp"
-                            app:cardElevation="0dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:id="@+id/network_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_network"
-                                android:contentDescription="Network" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <!-- Network name -->
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/network_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:text="MTN"
-                            android:textColor="#17172B"
-                            android:textSize="17sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@id/network_arrow"
-                            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
-                            app:layout_constraintTop_toTopOf="@id/network_icon_holder" />
-
-                        <!-- Phone number -->
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/network_number"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:layout_marginTop="2dp"
-                            android:text="0803 ••• ••••"
-                            android:textColor="#686878"
-                            android:textSize="13sp"
-                            app:layout_constraintEnd_toStartOf="@id/network_arrow"
-                            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
-                            app:layout_constraintTop_toBottomOf="@id/network_name" />
-
-                        <!-- Connected indicator -->
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/network_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:layout_marginTop="4dp"
-                            android:text="●  Connected"
-                            android:textColor="#16A34A"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toEndOf="@id/network_icon_holder"
-                            app:layout_constraintTop_toBottomOf="@id/network_number" />
-
-                        <ImageView
-                            android:id="@+id/network_arrow"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_right"
-                            android:contentDescription="Open"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <!-- Quick actions title -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="26dp">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tools_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quick Actions"
-                        android:textColor="#17172B"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <!-- Quick action grid -->
-                <GridView
-                    android:id="@+id/tool_grid_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:horizontalSpacing="12dp"
-                    android:numColumns="2"
-                    android:verticalSpacing="12dp"
-                    android:stretchMode="columnWidth"
-                    android:gravity="center" />
-
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="-38dp" />
             </LinearLayout>
-
-
-            <!-- Compact toolbar shown when collapsed -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="#F7F7FA"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/USSDTheme">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/collapsed_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Easy Check"
-                        android:textColor="#17172B"
-                        android:textSize="19sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.appcompat.widget.Toolbar>
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include
+        layout="@layout/ussd_activity_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="4dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

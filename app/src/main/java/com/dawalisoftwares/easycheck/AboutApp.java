@@ -15,13 +15,7 @@ public class AboutApp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_app);
-        Toolbar toolbar = findViewById(R.id.toolbar);
         LinearLayout changeLog, privacy, email, author, comp, location;
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
         changeLog = findViewById(R.id.changelog);
         changeLog.setOnClickListener(view -> new MaterialAlertDialogBuilder(AboutApp.this).setMessage(getString(R.string.easy_check_1_0_nno_changes))
                 .setTitle("ChangeLog")

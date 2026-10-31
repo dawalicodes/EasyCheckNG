@@ -2,14 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sim_card_card"
-    style="@style/bottomCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/spacing_large"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardElevation="10dip"
-    app:strokeWidth="0.5dip"
-    app:strokeColor="@color/grey_10"
-    app:cardUseCompatPadding="false">
-
+    android:layout_marginHorizontal="8dp"
+    app:cardElevation="2dp"
+    style="@style/bottomCardView"
+    app:strokeWidth="0dp">
 </com.google.android.material.card.MaterialCardView>
