@@ -3,7 +3,6 @@ package com.dawalisoftwares.easycheck;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.SubscriptionInfo;
@@ -20,14 +19,34 @@ import java.util.List;
 
 public class SimCardManager {
     private static SimCardManager simCardManager = null;
-    private TelephonyManager telephonyManager;
-    private SubscriptionManager subscriptionManager;
-    private Context context;
+    private final TelephonyManager telephonyManager;
+    private final SubscriptionManager subscriptionManager;
+    private final Context context;
 
     private SimCardManager(Context context) {
         subscriptionManager = context.getSystemService(SubscriptionManager.class);
         telephonyManager = context.getSystemService(TelephonyManager.class);
         this.context = context;
+    }
+
+    public Sim getDefaultSim() {
+        int defaultSubId = SubscriptionManager.getDefaultSubscriptionId();
+        if (defaultSubId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.READ_PHONE_STATE)){
+                    new MaterialAlertDialogBuilder(getContext()).setMessage(R.string.request_rationale_one)
+                            .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE})).setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).create().show();
+                }else {
+                    requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE});
+                }
+                return null;
+            }
+            SubscriptionInfo defaultSubscriptionInfo = subscriptionManager.getActiveSubscriptionInfo(defaultSubId);
+           return getSim(defaultSubscriptionInfo.getSimSlotIndex());
+        }
+
+        return null;
     }
 
     public static SimCardManager getInstance(Context context) {
@@ -85,17 +104,7 @@ public class SimCardManager {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.READ_PHONE_STATE)){
                 new MaterialAlertDialogBuilder(getContext()).setMessage(R.string.request_rationale_one)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE});
-                            }
-                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        }).create().show();
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE})).setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).create().show();
             }else {
                 requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE});
             }

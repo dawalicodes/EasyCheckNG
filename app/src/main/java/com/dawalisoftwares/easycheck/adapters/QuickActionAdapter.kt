@@ -1,6 +1,7 @@
 package com.dawalisoftwares.easycheck.adapters
 
 import android.Manifest
+import android.R.attr.iconTint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ import android.graphics.Color
 import androidx.camera.view.TransformExperimental
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.component1
 import com.dawalisoftwares.easycheck.AboutApp
 import com.dawalisoftwares.easycheck.INFO
 import com.dawalisoftwares.easycheck.R
@@ -21,13 +23,14 @@ import com.dawalisoftwares.easycheck.ScanCardActivity
 import com.dawalisoftwares.easycheck.USSDCodes
 import com.dawalisoftwares.easycheck.databinding.ItemQuickActionsBinding
 import androidx.core.graphics.toColorInt
+import com.dawalisoftwares.easycheck.database.ItemEntity
+import com.dawalisoftwares.easycheck.interfaces.ItemClickListener
 
 @TransformExperimental
-
 class QuickActionAdapter(
     private val mContext: Context,
-    tool: MutableList<Action>
-) : ArrayAdapter<Action>(mContext, R.layout.item_quick_actions, tool) {
+    tool: MutableList<ItemEntity>,private val actionClickListener: ItemClickListener
+) : ArrayAdapter<ItemEntity>(mContext, R.layout.item_quick_actions, tool) {
 
     override fun getView(
         position: Int,
@@ -53,23 +56,23 @@ class QuickActionAdapter(
         )
 
         binding.actionTitle.text = action?.name ?: ""
-        binding.actionDescription.text = action?.desc ?: ""
+        binding.actionDescription.text = action?.description ?: ""
 
-        val (cardColor, iconBackground, iconTint, strokeColor) = when (action?.name) {
-            INFO.CHECK_AIRTIME_BALANCE -> listOf(
-                "#FFFAEB", "#FFF0BF", "#F59A00", "#F7EED7"
+        val (cardColor, iconBackground, iconTint, strokeColor) = when (position) {
+            0 -> listOf(
+                "#FFFAEB", action?.iconBackgroundColor ?: "#F0ECFF", action?.iconColor ?: "#6741D9", "#F7EED7"
             ).map { it.toColorInt() }
 
-            INFO.CHECK_DATA_BALANCE -> listOf(
-                "#EFF6FF", "#CDE3FF", "#1673E6", "#DCEBFF"
+            1 -> listOf(
+                "#EFF6FF", action?.iconBackgroundColor ?: "#F0ECFF", action?.iconColor ?: "#6741D9", "#DCEBFF"
             ).map { it.toColorInt() }
 
-            INFO.CHECK_PHONE_NUMBER -> listOf(
-                "#EDF9F2", "#C8F0D8", "#159B5A", "#DDF3E6"
+            2 -> listOf(
+                "#EDF9F2", action?.iconBackgroundColor ?: "#F0ECFF", action?.iconColor ?: "#6741D9", "#DDF3E6"
             ).map { it.toColorInt() }
 
-            INFO.CHECK_TARIFF_PLAN -> listOf(
-                "#F5F1FF", "#DED0FF", "#6335D5", "#EAE2FF"
+            3 -> listOf(
+                "#F5F1FF", action?.iconBackgroundColor ?: "#F0ECFF", action?.iconColor ?: "#6741D9", "#EAE2FF"
             ).map { it.toColorInt() }
 
             else -> listOf(
@@ -85,53 +88,16 @@ class QuickActionAdapter(
         binding.iconHolder.setCardBackgroundColor(iconBackground)
         binding.actionIcon.setColorFilter(iconTint)
 
-        // Always update the click listener for recycled views.
         binding.root.setOnClickListener {
-            when (action?.name) {
-                INFO.USSD_CODES -> {
-                    mContext.startActivity(
-                        Intent(mContext, USSDCodes::class.java)
-                    )
-                }
-
-                INFO.SCAN_CARD -> {
-                    if (
-                        ContextCompat.checkSelfPermission(
-                            mContext,
-                            Manifest.permission.CAMERA
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        mContext.startActivity(
-                            Intent(mContext, ScanCardActivity::class.java)
-                        )
-                    } else if (mContext is Activity) {
-                        ActivityCompat.requestPermissions(
-                            mContext,
-                            arrayOf(Manifest.permission.CAMERA),
-                            INFO.CAMERA_REQUEST_CODE
-                        )
-                    }
-                }
-
-                INFO.ABOUT -> {
-                    mContext.startActivity(
-                        Intent(mContext, AboutApp::class.java)
-                    )
-                }
-            }
+            action?.let { action -> actionClickListener.onItemClickListener(binding.actionCard, action.name, action.description,position) }
         }
 
         TooltipCompat.setTooltipText(
             binding.root,
-            action?.desc ?: ""
+            action?.description ?: ""
         )
 
         return binding.root
     }
 }
 
-data class Action(
-    val name: String,
-    val icon: Int,
-    val desc: String
-)

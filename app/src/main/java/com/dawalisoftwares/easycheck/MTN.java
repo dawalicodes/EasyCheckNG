@@ -170,4 +170,13 @@ public class MTN implements Network {
     }
 
 
+    @Override
+    public int getNetworkLogoHolder() {
+        return R.drawable.bg_sim_mtn;
+    }
+
+    @Override
+    public int getNetworkLogo() {
+        return R.drawable.logo_mtn;
+    }
 }

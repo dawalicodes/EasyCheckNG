@@ -151,4 +151,14 @@ public class Mobile implements Network {
     public String getNetworkName() {
         return INFO.NETWORK_NAME_MOBILE;
     }
+
+    @Override
+    public int getNetworkLogoHolder() {
+        return R.drawable.bg_sim_9mobile;
+    }
+
+    @Override
+    public int getNetworkLogo() {
+        return R.drawable.logo_9mobile;
+    }
 }

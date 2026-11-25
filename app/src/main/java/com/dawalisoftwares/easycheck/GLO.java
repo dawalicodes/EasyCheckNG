@@ -164,4 +164,14 @@ public class GLO implements Network {
     public String getNetworkName() {
         return INFO.NETWORK_NAME_GLO;
     }
+
+    @Override
+    public int getNetworkLogoHolder() {
+        return R.drawable.bg_sim_glo;
+    }
+
+    @Override
+    public int getNetworkLogo() {
+        return R.drawable.logo_glo;
+    }
 }

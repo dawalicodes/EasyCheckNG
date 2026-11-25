@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.dawalisoftwares.easycheck.INFO;
-import com.dawalisoftwares.easycheck.R;
 import com.dawalisoftwares.easycheck.Sim;
 import com.dawalisoftwares.easycheck.databinding.ItemSelectSimBinding;
 import com.dawalisoftwares.easycheck.databinding.ItemSingleSimBinding;
 import com.dawalisoftwares.easycheck.interfaces.EasyReveal;
+import com.dawalisoftwares.easycheck.interfaces.Network;
 import com.dawalisoftwares.easycheck.interfaces.OnSimSelected;
 
 import java.util.List;
@@ -45,83 +44,27 @@ public class SelectSimReveal extends EasyReveal {
         if (simCards.size() > 1) {
             ItemSelectSimBinding binding = ItemSelectSimBinding.inflate(layoutInflater, viewGroup, false);
             view = binding.getRoot();
+            Network network1, network2;
+            network1 = simCards.get(0).getNetwork();
+            network2 = simCards.get(1).getNetwork();
 
-            switch (simCards.get(0).getMnc()) {
-                case INFO.NETWORK_MNC_AIRTEL -> {
-                    binding.simLogoHolderOne.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_airtel));
-                    binding.simLogoOne.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_airtel));
-                    binding.simNetworkNameOne.setText(INFO.NETWORK_NAME_AIRTEL);
-                }
-                case INFO.NETWORK_MNC_MTN -> {
-                    binding.simLogoHolderOne.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_mtn));
-                    binding.simLogoOne.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_mtn));
-                    binding.simNetworkNameOne.setText(INFO.NETWORK_NAME_MTN);
-                }
+            binding.simLogoHolderOne.setBackground(ContextCompat.getDrawable(context, network1.getNetworkLogoHolder()));
+            binding.simLogoOne.setImageDrawable(ContextCompat.getDrawable(context, network1.getNetworkLogo()));
+            binding.simNetworkNameOne.setText(network1.getNetworkName());
 
-                case INFO.NETWORK_MNC_GLO -> {
-                    binding.simLogoHolderOne.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_glo));
-                    binding.simLogoOne.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_glo));
-                    binding.simNetworkNameOne.setText(INFO.NETWORK_NAME_GLO);
-                }
-                case INFO.NETWORK_MNC_MOBILE -> {
-                    binding.simLogoHolderOne.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_9mobile));
-                    binding.simLogoOne.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_9mobile));
-                    binding.simNetworkNameOne.setText(INFO.NETWORK_NAME_MOBILE);
-                }
-            }
-
-            switch (simCards.get(1).getMnc()) {
-                case INFO.NETWORK_MNC_AIRTEL -> {
-                    binding.simLogoHolderTwo.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_airtel));
-                    binding.simLogoTwo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_airtel));
-                    binding.simNetworkNameTwo.setText(INFO.NETWORK_NAME_AIRTEL);
-                }
-                case INFO.NETWORK_MNC_MTN -> {
-                    binding.simLogoHolderTwo.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_mtn));
-                    binding.simLogoTwo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_mtn));
-                    binding.simNetworkNameTwo.setText(INFO.NETWORK_NAME_MTN);
-                }
-
-                case INFO.NETWORK_MNC_GLO -> {
-                    binding.simLogoHolderTwo.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_glo));
-                    binding.simLogoTwo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_glo));
-                    binding.simNetworkNameTwo.setText(INFO.NETWORK_NAME_GLO);
-                }
-
-                case INFO.NETWORK_MNC_MOBILE -> {
-                    binding.simLogoHolderTwo.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_9mobile));
-                    binding.simLogoTwo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_9mobile));
-                    binding.simNetworkNameTwo.setText(INFO.NETWORK_NAME_MOBILE);
-                }
-            }
+            binding.simLogoHolderTwo.setBackground(ContextCompat.getDrawable(context, network2.getNetworkLogoHolder()));
+            binding.simLogoTwo.setImageDrawable(ContextCompat.getDrawable(context, network2.getNetworkLogo()));
+            binding.simNetworkNameTwo.setText(network2.getNetworkName());
 
             binding.simCardOne.setOnClickListener(view1 -> simOneClick());
             binding.simCardTwo.setOnClickListener(view2 -> simTwoClick());
         } else  {
             ItemSingleSimBinding binding = ItemSingleSimBinding.inflate(layoutInflater, viewGroup, false);
             view = binding.getRoot();
-            switch (simCards.get(0).getMnc()) {
-                case INFO.NETWORK_MNC_AIRTEL -> {
-                    binding.simLogoHolder.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_airtel));
-                    binding.simLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_airtel));
-                    binding.simNetworkName.setText(INFO.NETWORK_NAME_AIRTEL);
-                }
-                case INFO.NETWORK_MNC_MTN -> {
-                    binding.simLogoHolder.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_mtn));
-                    binding.simLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_mtn));
-                    binding.simNetworkName.setText(INFO.NETWORK_NAME_MTN);
-                }
-                case INFO.NETWORK_MNC_GLO -> {
-                    binding.simLogoHolder.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_glo));
-                    binding.simLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_glo));
-                    binding.simNetworkName.setText(INFO.NETWORK_NAME_GLO);
-                }
-                case INFO.NETWORK_MNC_MOBILE -> {
-                    binding.simLogoHolder.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_sim_9mobile));
-                    binding.simLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.logo_9mobile));
-                    binding.simNetworkName.setText(INFO.NETWORK_NAME_MOBILE);
-                }
-            }
+            Network network = simCards.get(0).getNetwork();
+            binding.simLogoHolder.setBackground(ContextCompat.getDrawable(context,network.getNetworkLogoHolder()));
+            binding.simLogo.setImageDrawable(ContextCompat.getDrawable(context, network.getNetworkLogo()));
+            binding.simNetworkName.setText(network.getNetworkName());
         }
         return view;
     }

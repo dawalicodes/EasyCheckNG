@@ -161,4 +161,14 @@ public class Airtel implements Network {
     public String getNetworkName() {
         return INFO.NETWORK_NAME_AIRTEL;
     }
+
+    @Override
+    public int getNetworkLogoHolder() {
+        return R.drawable.bg_sim_airtel;
+    }
+
+    @Override
+    public int getNetworkLogo() {
+        return R.drawable.logo_airtel;
+    }
 }

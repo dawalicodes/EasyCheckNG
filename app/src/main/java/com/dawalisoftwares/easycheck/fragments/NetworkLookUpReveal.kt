@@ -18,45 +18,50 @@ class NetworkLookUpReveal : EasyReveal() {
     override fun onCreate(context: Context) {}
     override fun onCreateView(
         viewGroup: ViewGroup,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ): View {
         val view = layoutInflater.inflate(R.layout.network_look_up, viewGroup, false)
-        val icon: ImageView = view.findViewById(R.id.icon)
+        val simLogoHolder: View = view.findViewById(R.id.sim_logo_holder)
+        val simLogo: ImageView = view.findViewById(R.id.sim_logo)
         val title: TextView = view.findViewById(R.id.title)
         val input: TextInputEditText = view.findViewById(R.id.phone_lookup)
         val inputLayout: TextInputLayout = view.findViewById(R.id.phone_layout)
         val res = view.resources
 
         input.doOnTextChanged { text, _, _, _ ->
-            icon.setImageResource(
-                when (if (text!!.length < 4) text else text.substring(0..3)) {
-                    in res.getStringArray(R.array.mtn_prefix) -> {
-                        title.text = INFO.NETWORK_NAME_MTN
-                        inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res,R.drawable.ic_check_circle,view.context.theme)
-                        R.drawable.mtn
-                    }
-                    in res.getStringArray(R.array.airtel_prefix) -> {
-                        title.text = INFO.NETWORK_NAME_AIRTEL
-                        inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res,R.drawable.ic_check_circle,view.context.theme)
-                        R.drawable.airtel
-                    }
-                    in res.getStringArray(R.array.mobile_prefix) -> {
-                        title.text = INFO.NETWORK_NAME_MOBILE
-                        inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res,R.drawable.ic_check_circle,view.context.theme)
-                        R.drawable.mobile
-                    }
-                    in res.getStringArray(R.array.glo_prefix) -> {
-                        title.text = INFO.NETWORK_NAME_GLO
-                        inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res,R.drawable.ic_check_circle,view.context.theme)
-                        R.drawable.glo
-                    }
-                    else -> {
-                        title.text = null
-                        inputLayout.endIconDrawable = null
-                        R.drawable.ic_baseline_sim_card_24
-                    }
+            val inputStr = if ((text.isNullOrEmpty()) || (text.length < 4)) text?.toString() ?: "" else text.substring(0..3)
+            when (inputStr) {
+                in res.getStringArray(R.array.mtn_prefix) -> {
+                    title.text = INFO.NETWORK_NAME_MTN
+                    simLogoHolder.setBackgroundResource(R.drawable.bg_sim_mtn)
+                    simLogo.setImageResource(R.drawable.logo_mtn)
+                    inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res, R.drawable.ic_check_circle, view.context.theme)
                 }
-            )
+                in res.getStringArray(R.array.airtel_prefix) -> {
+                    title.text = INFO.NETWORK_NAME_AIRTEL
+                    simLogoHolder.setBackgroundResource(R.drawable.bg_sim_airtel)
+                    simLogo.setImageResource(R.drawable.logo_airtel)
+                    inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res, R.drawable.ic_check_circle, view.context.theme)
+                }
+                in res.getStringArray(R.array.mobile_prefix) -> {
+                    title.text = INFO.NETWORK_NAME_MOBILE
+                    simLogoHolder.setBackgroundResource(R.drawable.bg_sim_9mobile)
+                    simLogo.setImageResource(R.drawable.logo_9mobile)
+                    inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res, R.drawable.ic_check_circle, view.context.theme)
+                }
+                in res.getStringArray(R.array.glo_prefix) -> {
+                    title.text = INFO.NETWORK_NAME_GLO
+                    simLogoHolder.setBackgroundResource(R.drawable.bg_sim_glo)
+                    simLogo.setImageResource(R.drawable.logo_glo)
+                    inputLayout.endIconDrawable = ResourcesCompat.getDrawable(res, R.drawable.ic_check_circle, view.context.theme)
+                }
+                else -> {
+                    title.text = "Find a phone network"
+                    simLogoHolder.setBackgroundResource(R.drawable.bg_sim_mtn)
+                    simLogo.setImageResource(R.drawable.ic_baseline_dialpad_24)
+                    inputLayout.endIconDrawable = null
+                }
+            }
         }
 
         return view

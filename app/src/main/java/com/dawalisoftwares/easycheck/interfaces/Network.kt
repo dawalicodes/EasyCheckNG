@@ -26,6 +26,8 @@ interface Network {
     fun loadAirtimeFromBank(sim: Sim?, bundle: Bundle?)
     fun nationalNumber(sim: Sim?, bundle: Bundle?)
     fun getNetworkName():String
+    fun getNetworkLogoHolder(): Int
+    fun getNetworkLogo(): Int
     fun privateNumber(sim: Sim?, bundle: Bundle?)
     @SuppressLint("MissingPermission")
     fun placeCall(sim: Sim?, uri: Uri) {

@@ -46,7 +46,10 @@
                 android:textColor="#5035E8"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:padding="4dp"
+                android:padding="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />

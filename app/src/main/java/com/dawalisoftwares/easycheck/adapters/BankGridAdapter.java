@@ -5,12 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.dawalisoftwares.easycheck.R;
 import com.dawalisoftwares.easycheck.interfaces.Bank;
@@ -34,14 +33,18 @@ public class BankGridAdapter extends ArrayAdapter<Bank> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(resource,parent,false);
         }
-        LinearLayoutCompat bankFace = convertView.findViewById(R.id.bank_face_parent);
-        if (bankSelectedListener != null) {
+        View bankFace = convertView.findViewById(R.id.bank_face_parent);
+        if (bankFace != null && bankSelectedListener != null) {
             bankFace.setOnClickListener(view -> bankSelectedListener.bankSelected(Objects.requireNonNull(getItem(position))));
         }
-        AppCompatImageView logo = convertView.findViewById(R.id.bank_logo);
-        logo.setImageResource(Objects.requireNonNull(getItem(position)).getLogo());
+        ImageView logo = convertView.findViewById(R.id.bank_logo);
+        if (logo != null) {
+            logo.setImageResource(Objects.requireNonNull(getItem(position)).getLogo());
+        }
         TextView name = convertView.findViewById(R.id.bank_name);
-        name.setText(Objects.requireNonNull(getItem(position)).getName());
+        if (name != null) {
+            name.setText(Objects.requireNonNull(getItem(position)).getName());
+        }
         return convertView;
     }
 

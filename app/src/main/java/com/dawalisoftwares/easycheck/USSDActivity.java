@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,10 +33,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dawalisoftwares.easycheck.adapters.Action;
 import com.dawalisoftwares.easycheck.adapters.QuickActionAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDAdapter;
 import com.dawalisoftwares.easycheck.adapters.USSDItemDecorator;
+import com.dawalisoftwares.easycheck.database.DatabaseViewModel;
+import com.dawalisoftwares.easycheck.database.ItemEntity;
 import com.dawalisoftwares.easycheck.fragments.BankAirtimeReveal;
 import com.dawalisoftwares.easycheck.fragments.BankServiceBottomSheet;
 import com.dawalisoftwares.easycheck.fragments.NetworkLookUpReveal;
@@ -52,8 +55,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @TransformExperimental
 public class USSDActivity extends AppCompatActivity implements OnSimSelected, OnPickContact {
@@ -61,13 +62,13 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
     RecyclerView ussdRecycler;
     USSDAdapter adapter;
     Context context;
-    private boolean done = false;
     private SimCardManager simCardManager;
     private ArrayList<Object> items;
     private LinearLayoutManager ussdLayoutManager;
     private int opened = -1;
     private USSDViewModel viewModel;
     private List<Bank> banks;
+    private boolean dataLoaded = false;
 
     ActivityResultLauncher<Void> pickContact = registerForActivityResult(new ActivityResultContracts.PickContact(), result -> {
         {
@@ -103,44 +104,45 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
+        SplashScreen splashscreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ussdactivity);
         context = USSDActivity.this;
         Telecom.INSTANCE.setTelecomManager((TelecomManager) getApplicationContext().getSystemService(Context.TELECOM_SERVICE));
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                done = true;
-            }
-        }, 2000);
         viewModel = new ViewModelProvider(this).get(USSDViewModel.class);
         ussdRecycler = findViewById(R.id.ussd_recycler_view);
         GridView toolGridview = findViewById(R.id.tool_grid_view);
+        TextView editActions = findViewById(R.id.edit_actions);
+        if (editActions != null) {
+            editActions.setOnClickListener(v -> {
+                Intent intent = new Intent(context, EditQuickActionsActivity.class);
+                startActivity(intent);
+            });
+        }
 
-        QuickActionAdapter toolsAdapter = new QuickActionAdapter(context, List.of(
-                new Action(
-                        INFO.CHECK_AIRTIME_BALANCE,
-                        R.drawable.baseline_account_balance_wallet_24,
-                        "Check your airtime balance"
-                ),
-                new Action(
-                        INFO.CHECK_DATA_BALANCE,
-                        R.drawable.baseline_wifi_24,
-                        "Check your remaining data"
-                ),
-                new Action(
-                        INFO.CHECK_PHONE_NUMBER,
-                        R.drawable.baseline_local_phone_24,
-                        "Check your phone number"
-                ),
-                new Action(
-                        INFO.CHECK_TARIFF_PLAN,
-                        R.drawable.ic_baseline_star_half_24,
-                        "Check your current tariff plan"
-                )
-        ));
+        DatabaseViewModel databaseViewModel = new ViewModelProvider(this).get(DatabaseViewModel.class);
+        simCardManager = SimCardManager.getInstance(context);
+
+        Sim defaultSim = simCardManager.getDefaultSim();
+        if (defaultSim != null) {
+            ImageView simIcon = findViewById(R.id.network_icon);
+            MaterialCardView simIconHolder = findViewById(R.id.network_icon_holder);
+            TextView simName = findViewById(R.id.network_name);
+
+            simIcon.setImageResource(defaultSim.getNetwork().getNetworkLogo());
+            simIconHolder.setBackground(getDrawable(defaultSim.getNetwork().getNetworkLogoHolder()));
+            simName.setText(defaultSim.getNetwork().getNetworkName());
+        }
+
+        banks = Bank.Companion.getAllBanks();
+
+        splashscreen.setKeepOnScreenCondition(() -> dataLoaded);
+        items = new ArrayList<>();
+        List<ItemEntity> quickActions = new ArrayList<>(4);
+
+        QuickActionAdapter toolsAdapter = new QuickActionAdapter(context,quickActions, (view, name, description, position) -> {
+            //todo
+        });
 
         toolGridview.setAdapter(toolsAdapter);
         ussdLayoutManager = new LinearLayoutManager(context) {
@@ -157,30 +159,18 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
         ussdRecycler.setLayoutManager(ussdLayoutManager);
         ussdRecycler.setHasFixedSize(false);
 
+        // 2. Observe database changes
+        databaseViewModel.getItems().observe(this, itemEntities -> {
+            items.clear();
+            items.addAll(itemEntities);
+            adapter.notifyDataSetChanged();
+        });
 
-        simCardManager = SimCardManager.getInstance(context);
-
-        banks = Bank.Companion.getAllBanks();
-
-        items = new ArrayList<>();
-        items.add(new Item(R.drawable.airtime_balance, INFO.CHECK_AIRTIME_BALANCE, "Checks your account balance."));
-        items.add(new Item(R.drawable.data_balance, INFO.CHECK_DATA_BALANCE, "Checks your data bundle balance"));
-        items.add(new Item(R.drawable.phone_number, INFO.CHECK_PHONE_NUMBER, "Checks your phone number"));
-        items.add(new Item(R.drawable.verify_person, INFO.CHECK_NIN, "Retrieve or link your national identification number"));
-        items.add(new Item(R.drawable.tariff_plan, INFO.CHECK_TARIFF_PLAN, "See what tariff plan you're subscribed to"));
-        items.add(new Item(R.drawable.pivate_number, INFO.PRIVATE_NUMBER, "Stay anonymous by hiding your number"));
-        items.add(new Item(R.drawable.network_lookup, INFO.NETWORK_LOOKUP, "checks a phone number network"));
-        items.add(new Item(R.drawable.top_up, INFO.LOAD_AIRTIME, "Load airtime[recharge card]"));
-        items.add(new Item(R.drawable.airtime_from_bank, INFO.LOAD_AIRTIME_FROM_BANK, "Recharge directly from your bank account"));
-        items.add(new Item(R.drawable.bank, INFO.BANK_SERVICE, "perform normal bank operations"));
-        items.add(new Item(R.drawable.buy_data, INFO.BUY_DATA, "Buy a data bundle"));
-        items.add(new Item(R.drawable.borrow_airtime, INFO.BORROW_AIRTIME, "Borrow airtime and pay on your next recharge"));
-        items.add(new Item(R.drawable.borrow_data, INFO.BORROW_DATA, "Borrow data and pay on your next recharge"));
-        items.add(new Item(R.drawable.transfer_airtime, INFO.TRANSFER_AIRTIME, "Transfer airtime to other phone number on your network"));
-        items.add(new Item(R.drawable.transfer_data, INFO.TRANSFER_DATA, "Transfer data to other phone number on your network"));
-        items.add(new Item(R.drawable.c_care, INFO.CALL_CUSTOMER_CARE, "Place a call to ISP customer care"));
-        items.add(new Item(R.drawable.self_service, INFO.SELF_SERVICE, "Self service."));
-        items.add(new Item(R.drawable.auto_renew, INFO.CANCEL_AUTO_RENEW, "Stop services from automatically renewing."));
+        databaseViewModel.getQuickActions().observe(this, quickActionEntities -> {
+            quickActions.clear();
+            quickActions.addAll(quickActionEntities);
+            toolsAdapter.notifyDataSetChanged();
+        });
         adapter = new USSDAdapter(items);
         ussdRecycler.addItemDecoration(new USSDItemDecorator());
         adapter.setOnItemClickListener((view, action, description, position) -> {
@@ -244,17 +234,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
 
     private void showPermissionRationale(String[] permissions, int code, String message) {
         new MaterialAlertDialogBuilder(context,R.style.USSDTheme).setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermissions(permissions, code);
-                    }
-                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                }).create().show();
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> requestPermissions(permissions, code)).setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).create().show();
     }
 
     private void addAndReAdjust(View view, int position, EasyReveal easyReveal) {
@@ -388,12 +368,7 @@ public class USSDActivity extends AppCompatActivity implements OnSimSelected, On
 
         } else {
             new MaterialAlertDialogBuilder(context,R.style.USSDTheme).setMessage("This Sim card is not supported")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    }).create().show();
+                    .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> dialogInterface.cancel()).create().show();
         }
     }
 

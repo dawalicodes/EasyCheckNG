@@ -1,16 +1,18 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.ksp)
 }
 
 android {
-    compileSdk 34
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.dawalisoftwares.easycheck"
-        minSdk 23
-        targetSdk 33
+        minSdk 24
+        targetSdk 37
         versionCode 8
         versionName "3.0"
 
@@ -20,6 +22,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,12 +37,15 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = "21"
-    }
 
     namespace 'com.dawalisoftwares.easycheck'
-    buildToolsVersion '30.0.3'
+}
+
+// In Groovy DSL (app/build.gradle)
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21
+    }
 }
 
 dependencies {
@@ -58,6 +64,10 @@ dependencies {
     implementation libs.androidx.camera.mlkit.vision
     implementation libs.androidx.camera.view
     implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    ksp libs.androidx.room.compiler
+
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
